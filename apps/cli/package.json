@@ -15,19 +15,19 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "commander": "^12.0.0",
+    "commander": "^14.0.3",
     "envinfo": "^7.21.0",
     "fs-extra": "^11.3.3",
-    "picocolors": "^1.0.0",
+    "picocolors": "^1.1.1",
     "prompts": "^2.4.2",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/envinfo": "^7.8.4",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^20.11.0",
+    "@types/node": "^25.2.1",
     "@types/prompts": "^2.4.9",
-    "eslint": "^8.57.0",
-    "typescript": "^5.4.0"
+    "eslint": "^8.57.1",
+    "typescript": "^5.9.3"
   }
 }
