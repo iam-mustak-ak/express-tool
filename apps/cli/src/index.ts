@@ -1,6 +1,7 @@
 import { Command } from 'commander';
-import { version } from '../package.json';
+import pkg from '../package.json' with { type: 'json' };
 import { logger } from './utils/logger.js';
+const { version } = pkg;
 
 import { initCommand } from './commands/init.js';
 

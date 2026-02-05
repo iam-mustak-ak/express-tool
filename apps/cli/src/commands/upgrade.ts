@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import https from 'https';
-import packageJson from '../../package.json';
+import packageJson from '../../package.json' with { type: 'json' };
 import { logger } from '../utils/logger.js';
 
 export const upgrade = new Command()
