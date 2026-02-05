@@ -1,0 +1,17 @@
+{
+  "name": "@express-next/plugin-auth",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@express-next/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "eslint": "^8.57.0"
+  }
+}

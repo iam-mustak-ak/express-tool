@@ -58,6 +58,54 @@ importers:
         specifier: ^5.4.0
         version: 5.9.3
 
+  packages/core:
+    devDependencies:
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.1
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
+  packages/plugins/auth:
+    dependencies:
+      '@express-next/core':
+        specifier: workspace:*
+        version: link:../../core
+    devDependencies:
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.1
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
+  packages/plugins/database:
+    dependencies:
+      '@express-next/core':
+        specifier: workspace:*
+        version: link:../../core
+    devDependencies:
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.1
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
+  packages/plugins/swagger:
+    dependencies:
+      '@express-next/core':
+        specifier: workspace:*
+        version: link:../../core
+    devDependencies:
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.1
+      typescript:
+        specifier: ^5.4.0
+        version: 5.9.3
+
 packages:
 
   '@eslint-community/eslint-utils@4.9.1':
