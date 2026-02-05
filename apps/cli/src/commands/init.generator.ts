@@ -190,9 +190,47 @@ NODE_ENV=development`;
     );
   }
 
+  // Generate Views if requested
+  if (options.templateEngine !== 'none') {
+    const isTs = options.language === 'ts';
+
+    // Add dependencies
+    Object.assign(packageJson.dependencies, {
+      [options.templateEngine]: options.templateEngine === 'ejs' ? '^3.1.9' : '^3.0.2',
+    });
+    if (isTs) {
+      Object.assign(packageJson.devDependencies, {
+        [`@types/${options.templateEngine}`]:
+          options.templateEngine === 'ejs' ? '^3.1.5' : '^2.0.10',
+      });
+    }
+
+    fs.writeJsonSync(path.join(projectRoot, 'package.json'), packageJson, { spaces: 2 });
+
+    const viewsDir = path.join(srcDir, 'views');
+    fs.mkdirSync(viewsDir);
+
+    // Import templates
+    const { ejsTemplates, pugTemplates, cssStyle } = await import('../templates/views.js');
+    const templates = options.templateEngine === 'ejs' ? ejsTemplates : pugTemplates;
+    const ext = options.templateEngine;
+
+    // Write Views
+    fs.writeFileSync(path.join(viewsDir, `index.${ext}`), templates.index);
+    fs.writeFileSync(path.join(viewsDir, `error.${ext}`), templates.error);
+
+    // Write Public CSS
+    const publicDir = path.join(srcDir, 'public');
+    const cssDir = path.join(publicDir, 'css');
+    fs.mkdirSync(publicDir);
+    fs.mkdirSync(cssDir);
+    fs.writeFileSync(path.join(cssDir, 'style.css'), cssStyle);
+  }
+
   let indexContent = `import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import path from 'path';
 `;
 
   if (options.auth === 'jwt') {
@@ -212,6 +250,17 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+// View Engine Setup
+${
+  options.templateEngine !== 'none'
+    ? `
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', '${options.templateEngine}');
+app.use(express.static(path.join(__dirname, 'public')));
+`
+    : ''
+}
+
 `;
 
   if (options.apiType === 'rest-swagger') {
@@ -222,8 +271,12 @@ app.use(express.json());
     indexContent += `app.use('/auth', authRouter);\n`;
   }
 
-  indexContent += `app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  indexContent += `app.get('/', (req, res) => {
+  ${
+    options.templateEngine !== 'none'
+      ? `res.render('index', { title: 'Express App', message: 'Hello from ${options.templateEngine.toUpperCase()}!' });`
+      : `res.json({ status: 'ok', timestamp: new Date().toISOString() });`
+  }
 });
 `;
 

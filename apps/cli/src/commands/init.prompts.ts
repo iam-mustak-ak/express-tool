@@ -15,6 +15,7 @@ export const initOptionsSchema = z.object({
   apiType: z.enum(['rest', 'rest-swagger']),
   database: z.enum(['postgresql', 'mysql', 'none']),
   auth: z.enum(['jwt', 'none']),
+  templateEngine: z.enum(['ejs', 'pug', 'none']),
 });
 
 export type InitOptions = z.infer<typeof initOptionsSchema>;
@@ -84,6 +85,17 @@ export async function promptInitOptions(): Promise<InitOptions> {
         choices: [
           { title: 'JWT (JSON Web Token)', value: 'jwt' },
           { title: 'None', value: 'none' },
+        ],
+        initial: 0,
+      },
+      {
+        type: 'select',
+        name: 'templateEngine',
+        message: 'Select template engine',
+        choices: [
+          { title: 'EJS (Embedded JavaScript)', value: 'ejs' },
+          { title: 'Pug (Jade)', value: 'pug' },
+          { title: 'None (API only)', value: 'none' },
         ],
         initial: 0,
       },
