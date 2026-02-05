@@ -400,6 +400,22 @@ ${serverListen}
     isTs ? appTestTs : appTestJs,
   );
 
+  // --- Step 10: Docker & CI ---
+  const { dockerfile, dockerCompose } = await import('../templates/docker.js');
+  const { ciWorkflow } = await import('../templates/ci.js');
+
+  // Write Dockerfile
+  fs.writeFileSync(path.join(projectRoot, 'Dockerfile'), dockerfile(isTs));
+
+  // Write docker-compose.yml
+  fs.writeFileSync(path.join(projectRoot, 'docker-compose.yml'), dockerCompose(options.database));
+
+  // Write CI Workflow
+  const githubDir = path.join(projectRoot, '.github');
+  const workflowsDir = path.join(githubDir, 'workflows');
+  fs.mkdirSync(workflowsDir, { recursive: true });
+  fs.writeFileSync(path.join(workflowsDir, 'ci.yml'), ciWorkflow);
+
   // Generate tsconfig.json if TS
   if (options.language === 'ts') {
     const tsConfig = {
