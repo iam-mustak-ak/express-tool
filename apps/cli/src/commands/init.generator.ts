@@ -29,8 +29,13 @@ export async function generateBaseApp(options: InitOptions) {
       express: '^4.18.2',
       cors: '^2.8.5',
       helmet: '^7.1.0',
+      pino: '^8.19.0',
+      'pino-http': '^9.0.0',
+      'express-rate-limit': '^7.2.0',
     },
-    devDependencies: {},
+    devDependencies: {
+      'pino-pretty': '^10.3.1',
+    },
   };
 
   // Add specific dependencies based on API type
@@ -47,6 +52,45 @@ export async function generateBaseApp(options: InitOptions) {
     }
   }
 
+  // Database dependencies
+  if (options.database !== 'none') {
+    Object.assign(packageJson.dependencies, {
+      '@prisma/client': '^5.10.0',
+    });
+    Object.assign(packageJson.devDependencies, {
+      prisma: '^5.10.0',
+    });
+    packageJson.scripts.postinstall = 'prisma generate';
+    packageJson.scripts.migration = 'prisma migrate dev';
+    packageJson.scripts.studio = 'prisma studio';
+  }
+
+  // Auth dependencies
+  if (options.auth === 'jwt') {
+    Object.assign(packageJson.dependencies, {
+      jsonwebtoken: '^9.0.2',
+    });
+    if (options.language === 'ts') {
+      Object.assign(packageJson.devDependencies, {
+        '@types/jsonwebtoken': '^9.0.5',
+      });
+    }
+  }
+
+  // Template engine dependencies
+  if (options.templateEngine !== 'none') {
+    Object.assign(packageJson.dependencies, {
+      [options.templateEngine]: options.templateEngine === 'ejs' ? '^3.1.9' : '^3.0.2',
+    });
+    if (options.language === 'ts') {
+      Object.assign(packageJson.devDependencies, {
+        [`@types/${options.templateEngine}`]:
+          options.templateEngine === 'ejs' ? '^3.1.5' : '^2.0.10',
+      });
+    }
+  }
+
+  // TypeScript dependencies and Rate Limit types
   if (options.language === 'ts') {
     Object.assign(packageJson.devDependencies, {
       typescript: '^5.4.0',
@@ -54,6 +98,7 @@ export async function generateBaseApp(options: InitOptions) {
       '@types/express': '^4.17.21',
       '@types/cors': '^2.8.17',
       tsx: '^4.7.1',
+      '@types/express-rate-limit': '^6.0.0',
     });
   }
 
@@ -63,16 +108,32 @@ export async function generateBaseApp(options: InitOptions) {
   const srcDir = path.join(projectRoot, 'src');
   fs.mkdirSync(srcDir);
 
+  const isTs = options.language === 'ts';
+
+  // Generate Utilities and Middleware (Common)
+  const utilsDir = path.join(srcDir, 'utils');
+  if (!fs.existsSync(utilsDir)) fs.mkdirSync(utilsDir);
+
+  const middlewareDir = path.join(srcDir, 'middleware');
+  if (!fs.existsSync(middlewareDir)) fs.mkdirSync(middlewareDir);
+
+  const { loggerTs, loggerJs, errorHandlerTs, errorHandlerJs } =
+    await import('../templates/common.js');
+
+  fs.writeFileSync(
+    path.join(utilsDir, isTs ? 'logger.ts' : 'logger.js'),
+    isTs ? loggerTs : loggerJs,
+  );
+  fs.writeFileSync(
+    path.join(middlewareDir, isTs ? 'errorHandler.ts' : 'errorHandler.js'),
+    isTs ? errorHandlerTs : errorHandlerJs,
+  );
+
   // Generate Swagger Files if requested
   if (options.apiType === 'rest-swagger') {
     const docsDir = path.join(srcDir, 'docs');
     fs.mkdirSync(docsDir);
-    const middlewareDir = path.join(srcDir, 'middleware');
-    if (!fs.existsSync(middlewareDir)) fs.mkdirSync(middlewareDir);
 
-    const isTs = options.language === 'ts';
-
-    // Import templates
     const {
       swaggerConfigTs,
       swaggerRegistryTs,
@@ -84,7 +145,6 @@ export async function generateBaseApp(options: InitOptions) {
     const { validationMiddlewareTs, validationMiddlewareJs } =
       await import('../templates/middleware.js');
 
-    // Write Docs files
     fs.writeFileSync(
       path.join(docsDir, isTs ? 'generator.ts' : 'generator.js'),
       isTs ? swaggerConfigTs : swaggerConfigJs,
@@ -97,8 +157,6 @@ export async function generateBaseApp(options: InitOptions) {
       path.join(docsDir, isTs ? 'index.ts' : 'index.js'),
       isTs ? swaggerIndexTs : swaggerIndexJs,
     );
-
-    // Write Middleware
     fs.writeFileSync(
       path.join(middlewareDir, isTs ? 'validate.ts' : 'validate.js'),
       isTs ? validationMiddlewareTs : validationMiddlewareJs,
@@ -107,81 +165,25 @@ export async function generateBaseApp(options: InitOptions) {
 
   // Generate Database Config if requested
   if (options.database !== 'none') {
-    const isTs = options.language === 'ts';
-
-    // Add dependencies
-    Object.assign(packageJson.dependencies, {
-      '@prisma/client': '^5.10.0',
-    });
-    Object.assign(packageJson.devDependencies, {
-      prisma: '^5.10.0',
-    });
-
-    // Update scripts
-    packageJson.scripts.postinstall = 'prisma generate';
-    packageJson.scripts.migration = 'prisma migrate dev';
-    packageJson.scripts.studio = 'prisma studio';
-
-    fs.writeJsonSync(path.join(projectRoot, 'package.json'), packageJson, { spaces: 2 });
-
-    // Import templates
     const { prismaSchema, dbClientTs, dbClientJs } = await import('../templates/database.js');
-
-    // Create prisma directory and schema
     const prismaDir = path.join(projectRoot, 'prisma');
     fs.mkdirSync(prismaDir);
     fs.writeFileSync(path.join(prismaDir, 'schema.prisma'), prismaSchema(options.database));
 
-    // Create src/lib/db.ts
     const libDir = path.join(srcDir, 'lib');
     if (!fs.existsSync(libDir)) fs.mkdirSync(libDir);
     fs.writeFileSync(path.join(libDir, isTs ? 'db.ts' : 'db.js'), isTs ? dbClientTs : dbClientJs);
-
-    // Create .env file with placeholder
-    const envContent = `DATABASE_URL="${options.database}://user:password@localhost:5432/${options.projectName}?schema=public"
-PORT=3000
-NODE_ENV=development`;
-    fs.writeFileSync(path.join(projectRoot, '.env'), envContent);
-    // Create .env.example
-    fs.writeFileSync(path.join(projectRoot, '.env.example'), envContent);
-  } else {
-    // Basic .env if no DB
-    const envContent = `PORT=3000
-NODE_ENV=development`;
-    fs.writeFileSync(path.join(projectRoot, '.env'), envContent);
-    fs.writeFileSync(path.join(projectRoot, '.env.example'), envContent);
   }
 
   // Generate Auth if requested
   if (options.auth === 'jwt') {
-    const isTs = options.language === 'ts';
-
-    // Add dependencies
-    Object.assign(packageJson.dependencies, {
-      jsonwebtoken: '^9.0.2',
-    });
-    if (isTs) {
-      Object.assign(packageJson.devDependencies, {
-        '@types/jsonwebtoken': '^9.0.5',
-      });
-    }
-
-    fs.writeJsonSync(path.join(projectRoot, 'package.json'), packageJson, { spaces: 2 });
-
-    const middlewareDir = path.join(srcDir, 'middleware');
-    if (!fs.existsSync(middlewareDir)) fs.mkdirSync(middlewareDir);
-
-    // Import templates
     const { authMiddlewareTs, authMiddlewareJs, authRouterTs, authRouterJs } =
       await import('../templates/auth.js');
-
-    // Write Middleware
     fs.writeFileSync(
       path.join(middlewareDir, isTs ? 'auth.ts' : 'auth.js'),
       isTs ? authMiddlewareTs : authMiddlewareJs,
     );
 
-    // Write Auth Route
     const routesDir = path.join(srcDir, 'routes');
     if (!fs.existsSync(routesDir)) fs.mkdirSync(routesDir);
     fs.writeFileSync(
@@ -192,34 +194,15 @@ NODE_ENV=development`;
 
   // Generate Views if requested
   if (options.templateEngine !== 'none') {
-    const isTs = options.language === 'ts';
-
-    // Add dependencies
-    Object.assign(packageJson.dependencies, {
-      [options.templateEngine]: options.templateEngine === 'ejs' ? '^3.1.9' : '^3.0.2',
-    });
-    if (isTs) {
-      Object.assign(packageJson.devDependencies, {
-        [`@types/${options.templateEngine}`]:
-          options.templateEngine === 'ejs' ? '^3.1.5' : '^2.0.10',
-      });
-    }
-
-    fs.writeJsonSync(path.join(projectRoot, 'package.json'), packageJson, { spaces: 2 });
-
     const viewsDir = path.join(srcDir, 'views');
     fs.mkdirSync(viewsDir);
-
-    // Import templates
     const { ejsTemplates, pugTemplates, cssStyle } = await import('../templates/views.js');
     const templates = options.templateEngine === 'ejs' ? ejsTemplates : pugTemplates;
     const ext = options.templateEngine;
 
-    // Write Views
     fs.writeFileSync(path.join(viewsDir, `index.${ext}`), templates.index);
     fs.writeFileSync(path.join(viewsDir, `error.${ext}`), templates.error);
 
-    // Write Public CSS
     const publicDir = path.join(srcDir, 'public');
     const cssDir = path.join(publicDir, 'css');
     fs.mkdirSync(publicDir);
@@ -227,10 +210,30 @@ NODE_ENV=development`;
     fs.writeFileSync(path.join(cssDir, 'style.css'), cssStyle);
   }
 
+  // Generate .env
+  const dbUrl =
+    options.database !== 'none'
+      ? `DATABASE_URL="${options.database}://user:password@localhost:5432/${options.projectName}?schema=public"`
+      : '';
+  const jwtSecret = options.auth === 'jwt' ? `JWT_SECRET="super-secret-key"` : '';
+  const envContent = `PORT=3000
+NODE_ENV=development
+${dbUrl}
+${jwtSecret}
+LOG_LEVEL=info
+`;
+  fs.writeFileSync(path.join(projectRoot, '.env'), envContent);
+  fs.writeFileSync(path.join(projectRoot, '.env.example'), envContent);
+
+  // Generate index logic
   let indexContent = `import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import path from 'path';
+import pinoHttp from 'pino-http';
+import { rateLimit } from 'express-rate-limit';
+import { logger } from './utils/logger.js';
+import { errorHandler } from './middleware/errorHandler.js';
 `;
 
   if (options.auth === 'jwt') {
@@ -249,6 +252,15 @@ const port = process.env.PORT || 3000;
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use(pinoHttp({ logger }));
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  limit: 100, 
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+});
+app.use(limiter);
 
 // View Engine Setup
 ${
@@ -278,6 +290,10 @@ app.use(express.static(path.join(__dirname, 'public')));
       : `res.json({ status: 'ok', timestamp: new Date().toISOString() });`
   }
 });
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 `;
 
   if (options.auth === 'jwt') {
@@ -287,9 +303,25 @@ app.get('/protected', authenticateToken, (req, res) => {
 });\n`;
   }
 
-  indexContent += `app.listen(port, () => {
-  console.log(\`Server running on http://localhost:\${port}\`);
+  // Error Handler must be last
+  indexContent += `
+app.use(errorHandler);
+
+const server = app.listen(port, () => {
+  logger.info(\`Server running on http://localhost:\${port}\`);
 });
+
+// Graceful Shutdown
+const shutdown = () => {
+  logger.info('SIGTERM signal received: closing HTTP server');
+  server.close(() => {
+    logger.info('HTTP server closed');
+    process.exit(0);
+  });
+};
+
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
 `;
 
   const fileName = options.language === 'ts' ? 'index.ts' : 'index.js';
