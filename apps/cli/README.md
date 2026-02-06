@@ -168,8 +168,8 @@ my-express-app/
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request on our [GitHub Repository](https://github.com/yourusername/express-next).
+Contributions are welcome! Please open an issue or submit a pull request on our [GitHub Repository](https://github.com/iam-mustak-ak/express-next).
 
 ## 📄 License
 
-MIT © [Your Name]
+MIT © Mustak Ahmed Khan
