@@ -1,4 +1,16 @@
-export const ciWorkflow = `name: CI
+export const ciWorkflow = (pm: 'npm' | 'pnpm' | 'yarn' | 'bun') => {
+  const installCmd =
+    pm === 'npm'
+      ? 'npm install'
+      : pm === 'yarn'
+        ? 'yarn install --frozen-lockfile'
+        : pm === 'bun'
+          ? 'bun install --frozen-lockfile'
+          : 'pnpm install --frozen-lockfile';
+  const runCmd =
+    pm === 'npm' ? 'npm run' : pm === 'yarn' ? 'yarn' : pm === 'bun' ? 'bun run' : 'pnpm';
+
+  return `name: CI
 
 on:
   push:
@@ -18,25 +30,36 @@ jobs:
         with:
           node-version: '20'
           
-      - name: Install pnpm
+      ${
+        pm === 'pnpm'
+          ? `- name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 8`
+          : ''
+      }
+      ${
+        pm === 'bun'
+          ? `- name: Install Bun
+        uses: oven-sh/setup-bun@v1`
+          : ''
+      }
           
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: ${installCmd}
         
       - name: Lint
-        run: pnpm lint
+        run: ${runCmd} lint
         
       - name: Type Check
         if: \${{ hashFiles('tsconfig.json') != '' }}
-        run: pnpm tsc --noEmit
+        run: ${runCmd} tsc --noEmit
         
       - name: Build
         if: \${{ hashFiles('tsconfig.json') != '' }}
-        run: pnpm build
+        run: ${runCmd} build
 
       - name: Test
-        run: pnpm test
+        run: ${runCmd} test
 `;
+};

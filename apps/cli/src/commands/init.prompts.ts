@@ -16,6 +16,7 @@ export const initOptionsSchema = z.object({
   database: z.enum(['postgresql', 'mysql', 'mongodb', 'mongodb-prisma', 'none']),
   auth: z.enum(['jwt', 'none']),
   templateEngine: z.enum(['ejs', 'pug', 'none']),
+  packageManager: z.enum(['npm', 'pnpm', 'yarn', 'bun']),
 });
 
 export type InitOptions = z.infer<typeof initOptionsSchema>;
@@ -40,6 +41,18 @@ export async function promptInitOptions(): Promise<InitOptions> {
         choices: [
           { title: 'TypeScript (Recommended)', value: 'ts' },
           { title: 'JavaScript', value: 'js' },
+        ],
+        initial: 0,
+      },
+      {
+        type: 'select',
+        name: 'packageManager',
+        message: 'Select package manager',
+        choices: [
+          { title: 'pnpm (Recommended)', value: 'pnpm' },
+          { title: 'npm', value: 'npm' },
+          { title: 'Yarn', value: 'yarn' },
+          { title: 'Bun', value: 'bun' },
         ],
         initial: 0,
       },

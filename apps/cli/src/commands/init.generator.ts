@@ -20,6 +20,7 @@ export async function generateBaseApp(options: InitOptions) {
     version: '0.0.0',
     private: true,
     type: 'module',
+    packageManager: `${options.packageManager}@latest`,
     scripts: {
       dev: options.language === 'ts' ? 'tsx watch src/index.ts' : 'node --watch src/index.js',
       build: options.language === 'ts' ? 'tsc' : undefined,
@@ -449,7 +450,7 @@ ${serverListen}
   const { ciWorkflow } = await import('../templates/ci.js');
 
   // Write Dockerfile
-  fs.writeFileSync(path.join(projectRoot, 'Dockerfile'), dockerfile(isTs));
+  fs.writeFileSync(path.join(projectRoot, 'Dockerfile'), dockerfile(isTs, options.packageManager));
 
   // Write docker-compose.yml
   fs.writeFileSync(path.join(projectRoot, 'docker-compose.yml'), dockerCompose(options.database));
@@ -458,7 +459,7 @@ ${serverListen}
   const githubDir = path.join(projectRoot, '.github');
   const workflowsDir = path.join(githubDir, 'workflows');
   fs.mkdirSync(workflowsDir, { recursive: true });
-  fs.writeFileSync(path.join(workflowsDir, 'ci.yml'), ciWorkflow);
+  fs.writeFileSync(path.join(workflowsDir, 'ci.yml'), ciWorkflow(options.packageManager));
 
   // Generate tsconfig.json if TS
   if (options.language === 'ts') {

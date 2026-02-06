@@ -1,16 +1,20 @@
-export const dockerfile = (isTs: boolean) => `FROM node:20-alpine AS base
+export const dockerfile = (isTs: boolean, pm: 'npm' | 'pnpm' | 'yarn' | 'bun') => {
+  const installCmd = pm === 'npm' ? 'npm install' : `npm install -g ${pm} && ${pm} install`;
+  const buildCmd = pm === 'npm' ? 'npm run build' : `${pm} run build`;
+
+  return `FROM node:20-alpine AS base
 
 FROM base AS deps
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml* ./
-RUN npm install -g pnpm && pnpm i --frozen-lockfile
+COPY package.json ${pm === 'pnpm' ? 'pnpm-lock.yaml' : pm === 'yarn' ? 'yarn.lock' : pm === 'bun' ? 'bun.lockb' : 'package-lock.json'}* ./
+RUN ${installCmd} 
 
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-${isTs ? 'RUN npm install -g pnpm && pnpm run build' : ''}
+${isTs ? `RUN ${buildCmd}` : ''}
 
 FROM base AS runner
 WORKDIR /app
@@ -26,6 +30,7 @@ EXPOSE 3000
 
 CMD ["node", "${isTs ? 'dist/index.js' : 'src/index.js'}"]
 `;
+};
 
 export const dockerCompose = (
   dbType: 'postgresql' | 'mysql' | 'mongodb' | 'mongodb-prisma' | 'none',
