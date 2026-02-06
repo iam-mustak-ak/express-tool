@@ -32,6 +32,7 @@ export async function generateBaseApp(options: InitOptions) {
       pino: '^8.19.0',
       'pino-http': '^9.0.0',
       'express-rate-limit': '^7.2.0',
+      dotenv: '^16.4.5',
     },
     devDependencies: {
       'pino-pretty': '^10.3.1',
@@ -258,7 +259,8 @@ LOG_LEVEL=info
   fs.writeFileSync(path.join(projectRoot, '.env.example'), envContent);
 
   // Generate index logic
-  let indexContent = `import express from 'express';
+  let indexContent = `import 'dotenv/config';
+import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import path from 'path';
