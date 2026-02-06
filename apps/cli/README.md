@@ -1,15 +1,15 @@
 <div align="center">
 
-# 🚀 Express Next CLI
+# 🚀 Express Tool CLI
 
-[![npm version](https://img.shields.io/npm/v/express-next?style=flat-square)](https://www.npmjs.com/package/express-next)
+[![npm version](https://img.shields.io/npm/v/@express-tool/cli?style=flat-square)](https://www.npmjs.com/package/@express-tool/cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 </div>
 
 A production-grade Command Line Interface for generating robust, scalable Express.js applications.
-`express-next` automates the boring setup, enforcing best practices, modern tooling, and clean architecture from day one.
+`express-tool` automates the boring setup, enforcing best practices, modern tooling, and clean architecture from day one.
 
 ## ✨ Features
 
@@ -36,25 +36,49 @@ Install globally via your preferred package manager:
 ### npm
 
 ```bash
-npm install -g express-next
+npm install -g @express-tool/cli
 ```
 
 ### pnpm (Recommended)
 
 ```bash
-pnpm add -g express-next
+pnpm add -g @express-tool/cli
 ```
 
 ### Yarn
 
 ```bash
-yarn global add express-next
+yarn global add @express-tool/cli
 ```
 
 ### Bun
 
 ```bash
-bun add -g express-next
+bun add -g @express-tool/cli
+```
+
+---
+
+## ⚡ Execution without Installation
+
+You can also execute the CLI instantly without installing it globally:
+
+### npx (Node.js)
+
+```bash
+npx @express-tool/cli init
+```
+
+### pnpm dlx
+
+```bash
+pnpm dlx @express-tool/cli init
+```
+
+### bunx
+
+```bash
+bunx @express-tool/cli init
 ```
 
 ---
@@ -66,7 +90,7 @@ bun add -g express-next
 The `init` command launches an interactive wizard to configure your new application.
 
 ```bash
-express-next init
+express-tool init
 ```
 
 **Interactive Prompts:**
@@ -96,15 +120,15 @@ Quickly scaffold new resources (features) into your existing application. This c
 **Syntax:**
 
 ```bash
-express-next generate <resource-name>
+express-tool generate <resource-name>
 # or shorcut
-express-next g <resource-name>
+express-tool g <resource-name>
 ```
 
 **Example:**
 
 ```bash
-express-next g blogs
+express-tool g blogs
 ```
 
 **Output:**
@@ -131,7 +155,7 @@ app.use('/blogs', blogsRouter);
 View debugging information about your local environment. useful for reporting issues.
 
 ```bash
-express-next info
+express-tool info
 ```
 
 #### Update CLI
@@ -139,14 +163,14 @@ express-next info
 Check for updates or self-update the CLI tool.
 
 ```bash
-express-next upgrade
+express-tool upgrade
 ```
 
 ---
 
 ## 📂 Project Structure
 
-A typical project created with `express-next` looks like this:
+A typical project created with `@express-tool/cli` looks like this:
 
 ```
 my-express-app/

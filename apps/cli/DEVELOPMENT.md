@@ -1,6 +1,6 @@
-# 🛠️ Development Guide for Express Next CLI
+# 🛠️ Development Guide for Express Tool CLI
 
-This guide will help you set up your environment to develop and test the **Express Next CLI** locally.
+This guide will help you set up your environment to develop and test the **Express Tool CLI** locally.
 
 ## Prerequisities
 
@@ -46,15 +46,15 @@ You can run the CLI directly from the source (compiled dist) without installing 
 cd apps/cli
 
 # Run help
-npm start -- --help
+pnpm start -- --help
 
 # Generate a new project
-npm start -- init
+pnpm start -- init
 ```
 
 ### Option B: Using `npm link`
 
-To enable the `express-next` command globally on your machine pointing to your local source:
+To enable the `express-tool` command globally on your machine pointing to your local source:
 
 1. Link the package:
 
@@ -66,12 +66,12 @@ To enable the `express-next` command globally on your machine pointing to your l
 2. Run the command anywhere:
 
    ```bash
-   express-next --help
+   express-tool --help
    ```
 
 3. Unlink when done:
    ```bash
-   npm unlink -g express-next
+   npm unlink -g @express-tool/cli
    ```
 
 ## ⚡ Development Workflow
@@ -82,12 +82,12 @@ When working on the CLI code (`apps/cli/src`):
 
    ```bash
    cd apps/cli
-   npm run dev
+   pnpm run dev
    ```
 
 2. **Test Changes**: Open a new terminal and run your command.
    ```bash
-   npm start -- <command>
+   pnpm start -- <command>
    ```
 
 ## 🐛 Debugging
@@ -95,7 +95,7 @@ When working on the CLI code (`apps/cli/src`):
 To verify that the CLI is running correctly and picking up your changes:
 
 ```bash
-npm start -- info
+pnpm start -- info
 ```
 
 This will verify the environment and versions.
@@ -115,5 +115,5 @@ We use Vitest for testing.
 pnpm test
 
 # Run tests for specific package
-pnpm test --filter @express-next/plugin-auth
+pnpm test --filter @express-tool/plugin-auth
 ```
