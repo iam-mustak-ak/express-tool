@@ -28,7 +28,7 @@
     "express-next": "./dist/bin.js"
   },
   "scripts": {
-    "build": "rsbuild build && tsc --emitDeclarationOnly",
+    "build": "rsbuild build && tsc -b --force --emitDeclarationOnly",
     "dev": "rsbuild build --watch",
     "start": "node dist/bin.js",
     "lint": "eslint . --max-warnings 0",

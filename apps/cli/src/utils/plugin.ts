@@ -1,7 +1,7 @@
 import { Plugin, PluginContext } from '@express-next/core';
 import fs from 'fs-extra';
 import path from 'path';
-import { logger } from './logger.js';
+import { logger } from './logger';
 
 export async function executePlugin(
   plugin: Plugin,

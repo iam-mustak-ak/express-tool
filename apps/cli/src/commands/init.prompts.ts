@@ -1,6 +1,6 @@
 import prompts from 'prompts';
 import { z } from 'zod';
-import { logger } from '../utils/logger.js';
+import { logger } from '../utils/logger';
 
 export const initOptionsSchema = z.object({
   projectName: z

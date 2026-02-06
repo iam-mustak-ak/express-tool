@@ -10,9 +10,9 @@ import { testingPlugin } from '@express-next/plugin-testing';
 import { viewsPlugin } from '@express-next/plugin-views';
 import fs from 'fs-extra';
 import path from 'path';
-import { logger } from '../utils/logger.js';
-import { executePlugin } from '../utils/plugin.js';
-import { InitOptions } from './init.prompts.js';
+import { logger } from '../utils/logger';
+import { executePlugin } from '../utils/plugin';
+import { InitOptions } from './init.prompts';
 
 export async function generateBaseApp(options: InitOptions) {
   const projectRoot = path.resolve(process.cwd(), options.projectName);
@@ -152,18 +152,18 @@ import helmet from 'helmet';
 import path from 'path';
 import pinoHttp from 'pino-http';
 import { rateLimit } from 'express-rate-limit';
-import { logger } from './utils/logger.js';
-import { errorHandler } from './middleware/errorHandler.js';
-${options.database === 'mongodb' ? "import { connectDB } from './lib/db.js';" : ''}
+import { logger } from './utils/logger';
+import { errorHandler } from './middleware/errorHandler';
+${options.database === 'mongodb' ? "import { connectDB } from './lib/db';" : ''}
 `;
 
   if (options.auth === 'jwt') {
-    indexContent += `import { authRouter } from './routes/auth.js';\n`;
-    indexContent += `import { authenticateToken } from './middleware/auth.js';\n`;
+    indexContent += `import { authRouter } from './routes/auth';\n`;
+    indexContent += `import { authenticateToken } from './middleware/auth';\n`;
   }
 
   if (options.apiType === 'rest-swagger') {
-    indexContent += `import { swaggerRouter } from './docs/index.js';\n`;
+    indexContent += `import { swaggerRouter } from './docs/index';\n`;
   }
 
   indexContent += `

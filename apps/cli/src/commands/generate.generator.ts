@@ -8,7 +8,7 @@ import {
 } from '@express-next/plugin-resource';
 import fs from 'fs-extra';
 import path from 'path';
-import { logger } from '../utils/logger.js';
+import { logger } from '../utils/logger';
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -72,7 +72,7 @@ export async function generateResource(name: string) {
   logger.success(`Feature ${name} generated successfully!`);
   logger.info(`\nDon't forget to register the route in src/index.${ext}:`);
   logger.info(
-    `import { ${name.toLowerCase()}Router } from './routes/${name.toLowerCase()}.routes.js';`,
+    `import { ${name.toLowerCase()}Router } from './routes/${name.toLowerCase()}.routes';`,
   );
   logger.info(`app.use('/${name.toLowerCase()}s', ${name.toLowerCase()}Router);`);
 }

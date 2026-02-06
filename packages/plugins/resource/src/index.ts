@@ -4,7 +4,7 @@ import { Plugin } from '@express-next/core';
 export const controllerTs = (
   name: string,
 ) => `import { Request, Response, NextFunction } from 'express';
-import { logger } from '../utils/logger.js';
+import { logger } from '../utils/logger';
 
 export const get${name}s = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -77,7 +77,7 @@ export const delete${name} = async (req: Request, res: Response, next: NextFunct
 };
 `;
 
-export const controllerJs = (name: string) => `import { logger } from '../utils/logger.js';
+export const controllerJs = (name: string) => `import { logger } from '../utils/logger';
 
 export const get${name}s = async (req, res, next) => {
   try {
@@ -151,7 +151,7 @@ export const delete${name} = async (req, res, next) => {
 `;
 
 export const routesTs = (name: string) => `import { Router } from 'express';
-import * as ${name.toLowerCase()}Controller from '../controllers/${name.toLowerCase()}.controller.js';
+import * as ${name.toLowerCase()}Controller from '../controllers/${name.toLowerCase()}.controller';
 
 const router = Router();
 
@@ -165,7 +165,7 @@ export const ${name.toLowerCase()}Router = router;
 `;
 
 export const routesJs = (name: string) => `import { Router } from 'express';
-import * as ${name.toLowerCase()}Controller from '../controllers/${name.toLowerCase()}.controller.js';
+import * as ${name.toLowerCase()}Controller from '../controllers/${name.toLowerCase()}.controller';
 
 const router = Router();
 
@@ -179,7 +179,7 @@ export const ${name.toLowerCase()}Router = router;
 `;
 
 export const testTs = (name: string) => `import request from 'supertest';
-import { app } from '../src/index.js';
+import { app } from '../src/index';
 import { describe, it, expect } from 'vitest';
 
 describe('${name} API', () => {
@@ -204,7 +204,7 @@ describe('${name} API', () => {
 `;
 
 export const testJs = (name: string) => `import request from 'supertest';
-import { app } from '../src/index.js';
+import { app } from '../src/index';
 import { describe, it, expect } from 'vitest';
 
 describe('${name} API', () => {

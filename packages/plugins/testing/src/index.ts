@@ -30,7 +30,7 @@ export default defineConfig({
 
 export const appTestTs = `import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
-import { app } from '../src/index.js';
+import { app } from '../src/index';
 
 describe('App Integration Tests', () => {
   it('GET /health should return 200 OK', async () => {
@@ -48,7 +48,7 @@ describe('App Integration Tests', () => {
 
 export const appTestJs = `import { describe, it, expect } from 'vitest';
 import request from 'supertest';
-import { app } from '../src/index.js';
+import { app } from '../src/index';
 
 describe('App Integration Tests', () => {
   it('GET /health should return 200 OK', async () => {

@@ -44,7 +44,7 @@ export const prisma = new PrismaClient();
 `;
 
 export const mongooseClientTs = `import mongoose from 'mongoose';
-import { logger } from '../utils/logger.js';
+import { logger } from '../utils/logger';
 
 export const connectDB = async (): Promise<void> => {
   try {
@@ -58,7 +58,7 @@ export const connectDB = async (): Promise<void> => {
 `;
 
 export const mongooseClientJs = `import mongoose from 'mongoose';
-import { logger } from '../utils/logger.js';
+import { logger } from '../utils/logger';
 
 export const connectDB = async () => {
   try {

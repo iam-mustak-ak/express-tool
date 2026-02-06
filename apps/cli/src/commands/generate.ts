@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { generateResource } from './generate.generator.js';
+import { generateResource } from './generate.generator';
 
 export const generate = new Command()
   .name('generate')

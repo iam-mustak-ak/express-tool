@@ -1,9 +1,9 @@
 import { Command } from 'commander';
 import pkg from '../package.json' with { type: 'json' };
-import { logger } from './utils/logger.js';
+import { logger } from './utils/logger';
 const { version } = pkg;
 
-import { initCommand } from './commands/init.js';
+import { initCommand } from './commands/init';
 
 export const cli = new Command();
 
@@ -16,9 +16,9 @@ cli.hook('preAction', () => {
   logger.info('Welcome to express-next CLI');
 });
 
-import { generate } from './commands/generate.js';
-import { info } from './commands/info.js';
-import { upgrade } from './commands/upgrade.js';
+import { generate } from './commands/generate';
+import { info } from './commands/info';
+import { upgrade } from './commands/upgrade';
 
 cli.addCommand(initCommand);
 cli.addCommand(generate);

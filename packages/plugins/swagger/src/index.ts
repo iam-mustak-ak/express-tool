@@ -1,7 +1,7 @@
 import { Plugin, PluginContext } from '@express-next/core';
 
 export const swaggerConfigTs = `import { OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
-import { registry } from './registry.js';
+import { registry } from './registry';
 
 export function generateOpenApiDocs() {
   const generator = new OpenApiGeneratorV3(registry.definitions);
@@ -25,7 +25,7 @@ export const registry = new OpenAPIRegistry();
 
 export const swaggerIndexTs = `import swaggerUi from 'swagger-ui-express';
 import { Router } from 'express';
-import { generateOpenApiDocs } from './generator.js';
+import { generateOpenApiDocs } from './generator';
 
 export const swaggerRouter = Router();
 
@@ -36,7 +36,7 @@ swaggerRouter.get('/docs.json', (_, res) => res.json(docs));
 `;
 
 export const swaggerConfigJs = `import { OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
-import { registry } from './registry.js';
+import { registry } from './registry';
 
 export function generateOpenApiDocs() {
   const generator = new OpenApiGeneratorV3(registry.definitions);
@@ -60,7 +60,7 @@ export const registry = new OpenAPIRegistry();
 
 export const swaggerIndexJs = `import swaggerUi from 'swagger-ui-express';
 import { Router } from 'express';
-import { generateOpenApiDocs } from './generator.js';
+import { generateOpenApiDocs } from './generator';
 
 export const swaggerRouter = Router();
 
