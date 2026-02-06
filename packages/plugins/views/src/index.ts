@@ -1,4 +1,4 @@
-import { Plugin, PluginContext } from '@express-next/core';
+import { Plugin, PluginContext } from '@express-tool/core';
 
 export const ejsTemplates = {
   index: `<!DOCTYPE html>
@@ -107,6 +107,6 @@ export const viewsPlugin: Plugin = {
           content: cssStyle,
         },
       ],
-    } as import('@express-next/core').PluginAction;
+    } as import('@express-tool/core').PluginAction;
   },
 };

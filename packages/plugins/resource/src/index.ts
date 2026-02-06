@@ -1,5 +1,5 @@
 // This plugin currently only exports utility functions for the generate command.
-import { Plugin } from '@express-next/core';
+import { Plugin } from '@express-tool/core';
 
 export const controllerTs = (
   name: string,
@@ -233,6 +233,6 @@ export const resourcePlugin: Plugin = {
   apply: async () => {
     return {
       files: [],
-    } as import('@express-next/core').PluginAction;
+    } as import('@express-tool/core').PluginAction;
   },
 };

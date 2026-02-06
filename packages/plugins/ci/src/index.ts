@@ -1,4 +1,4 @@
-import { Plugin, PluginContext } from '@express-next/core';
+import { Plugin, PluginContext } from '@express-tool/core';
 
 export const ciWorkflow = (pm: 'npm' | 'pnpm' | 'yarn' | 'bun') => {
   const installCmd =
@@ -81,6 +81,6 @@ export const ciPlugin: Plugin = {
           content: ciWorkflow(packageManager),
         },
       ],
-    } as import('@express-next/core').PluginAction;
+    } as import('@express-tool/core').PluginAction;
   },
 };

@@ -1,4 +1,4 @@
-import { Plugin, PluginContext } from '@express-next/core';
+import { Plugin, PluginContext } from '@express-tool/core';
 
 export const eslintConfig = {
   env: {
@@ -77,6 +77,6 @@ export const qualityPlugin: Plugin = {
           ),
         },
       ],
-    } as import('@express-next/core').PluginAction;
+    } as import('@express-tool/core').PluginAction;
   },
 };

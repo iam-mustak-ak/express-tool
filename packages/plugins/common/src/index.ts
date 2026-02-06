@@ -1,4 +1,4 @@
-import { Plugin, PluginContext } from '@express-next/core';
+import { Plugin, PluginContext } from '@express-tool/core';
 
 export const loggerTs = `import pino from 'pino';
 
@@ -125,6 +125,6 @@ export const commonPlugin: Plugin = {
         PORT: '3000',
         NODE_ENV: 'development',
       },
-    } as import('@express-next/core').PluginAction;
+    } as import('@express-tool/core').PluginAction;
   },
 };

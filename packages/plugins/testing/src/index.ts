@@ -1,4 +1,4 @@
-import { Plugin, PluginContext } from '@express-next/core';
+import { Plugin, PluginContext } from '@express-tool/core';
 
 export const vitestConfigTs = `import { defineConfig } from 'vitest/config';
 
@@ -92,6 +92,6 @@ export const testingPlugin: Plugin = {
           content: isTs ? appTestTs : appTestJs,
         },
       ],
-    } as import('@express-next/core').PluginAction;
+    } as import('@express-tool/core').PluginAction;
   },
 };

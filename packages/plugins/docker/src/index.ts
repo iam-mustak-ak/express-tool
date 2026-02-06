@@ -1,4 +1,4 @@
-import { Plugin, PluginContext } from '@express-next/core';
+import { Plugin, PluginContext } from '@express-tool/core';
 
 export const dockerfile = (isTs: boolean, pm: 'npm' | 'pnpm' | 'yarn' | 'bun') => {
   const installCmd = pm === 'npm' ? 'npm install' : `npm install -g ${pm} && ${pm} install`;
@@ -135,6 +135,6 @@ export const dockerPlugin: Plugin = {
           content: dockerCompose(database),
         },
       ],
-    } as import('@express-next/core').PluginAction;
+    } as import('@express-tool/core').PluginAction;
   },
 };

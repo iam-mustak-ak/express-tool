@@ -5,7 +5,7 @@ import {
   routesTs,
   testJs,
   testTs,
-} from '@express-next/plugin-resource';
+} from '@express-tool/plugin-resource';
 import fs from 'fs-extra';
 import path from 'path';
 import { logger } from '../utils/logger';

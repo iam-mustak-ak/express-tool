@@ -1,4 +1,4 @@
-import { Plugin, PluginContext } from '@express-next/core';
+import { Plugin, PluginContext } from '@express-tool/core';
 
 export const prismaSchema = (provider: string) => {
   const isMongo = provider === 'mongodb';
@@ -126,7 +126,7 @@ export const databasePlugin: Plugin = {
         env: {
           DATABASE_URL: `mongodb://localhost:27017/${projectName}`,
         },
-      } as import('@express-next/core').PluginAction;
+      } as import('@express-tool/core').PluginAction;
     }
 
     const provider = database === 'mongodb-prisma' ? 'mongodb' : database;
@@ -160,6 +160,6 @@ export const databasePlugin: Plugin = {
       env: {
         DATABASE_URL: dbUrl,
       },
-    } as import('@express-next/core').PluginAction;
+    } as import('@express-tool/core').PluginAction;
   },
 };

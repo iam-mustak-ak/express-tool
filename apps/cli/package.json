@@ -1,5 +1,5 @@
 {
-  "name": "@express-next/cli",
+  "name": "@express-tool/cli",
   "version": "0.0.1",
   "description": "Production-grade CLI for Express.js applications",
   "keywords": [
@@ -32,7 +32,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "express-next": "./dist/bin.js"
+    "express-tool": "./dist/bin.js"
   },
   "scripts": {
     "build": "rsbuild build && tsc -b --force --emitDeclarationOnly",
@@ -48,18 +48,18 @@
     "picocolors": "^1.1.1",
     "prompts": "^2.4.2",
     "zod": "^4.3.6",
-    "@express-next/core": "workspace:*",
-    "@express-next/plugin-auth": "workspace:*",
-    "@express-next/plugin-database": "workspace:*",
-    "@express-next/plugin-swagger": "workspace:*",
-    "@express-next/plugin-common": "workspace:*",
-    "@express-next/plugin-middleware": "workspace:*",
-    "@express-next/plugin-views": "workspace:*",
-    "@express-next/plugin-testing": "workspace:*",
-    "@express-next/plugin-docker": "workspace:*",
-    "@express-next/plugin-ci": "workspace:*",
-    "@express-next/plugin-quality": "workspace:*",
-    "@express-next/plugin-resource": "workspace:*"
+    "@express-tool/core": "workspace:*",
+    "@express-tool/plugin-auth": "workspace:*",
+    "@express-tool/plugin-database": "workspace:*",
+    "@express-tool/plugin-swagger": "workspace:*",
+    "@express-tool/plugin-common": "workspace:*",
+    "@express-tool/plugin-middleware": "workspace:*",
+    "@express-tool/plugin-views": "workspace:*",
+    "@express-tool/plugin-testing": "workspace:*",
+    "@express-tool/plugin-docker": "workspace:*",
+    "@express-tool/plugin-ci": "workspace:*",
+    "@express-tool/plugin-quality": "workspace:*",
+    "@express-tool/plugin-resource": "workspace:*"
   },
   "devDependencies": {
     "@rsbuild/core": "^1.7.3",

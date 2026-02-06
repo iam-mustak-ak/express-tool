@@ -1,4 +1,4 @@
-import { Plugin, PluginContext } from '@express-next/core';
+import { Plugin, PluginContext } from '@express-tool/core';
 
 export const swaggerConfigTs = `import { OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
 import { registry } from './registry';
@@ -149,6 +149,6 @@ export const swaggerPlugin: Plugin = {
           content: isTs ? validationMiddlewareTs : validationMiddlewareJs,
         },
       ],
-    } as import('@express-next/core').PluginAction;
+    } as import('@express-tool/core').PluginAction;
   },
 };

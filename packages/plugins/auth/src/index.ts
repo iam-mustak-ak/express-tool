@@ -1,4 +1,4 @@
-import { Plugin, PluginContext } from '@express-next/core';
+import { Plugin, PluginContext } from '@express-tool/core';
 
 export const authMiddlewareTs = `import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
@@ -129,6 +129,6 @@ export const authPlugin: Plugin = {
       env: {
         JWT_SECRET: 'super-secret-key',
       },
-    } as import('@express-next/core').PluginAction;
+    } as import('@express-tool/core').PluginAction;
   },
 };

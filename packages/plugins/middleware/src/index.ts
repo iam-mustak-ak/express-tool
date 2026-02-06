@@ -1,4 +1,4 @@
-import { Plugin, PluginContext } from '@express-next/core';
+import { Plugin, PluginContext } from '@express-tool/core';
 
 export const validationMiddlewareTs = `import { Request, Response, NextFunction } from 'express';
 import { AnyZodObject, ZodError } from 'zod';
@@ -60,6 +60,6 @@ export const middlewarePlugin: Plugin = {
           content: isTs ? validationMiddlewareTs : validationMiddlewareJs,
         },
       ],
-    } as import('@express-next/core').PluginAction;
+    } as import('@express-tool/core').PluginAction;
   },
 };
