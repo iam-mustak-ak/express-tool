@@ -14,6 +14,7 @@ export interface PluginAction {
   }[];
   scripts?: Record<string, string>;
   env?: Record<string, string>;
+  commands?: string[];
 }
 
 export interface Plugin {

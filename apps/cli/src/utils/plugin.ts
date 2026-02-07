@@ -54,5 +54,20 @@ export async function executePlugin(
     };
   }
 
+  // 5. Run Commands (if any)
+  if (action.commands) {
+    for (const command of action.commands) {
+      logger.info(`  Running command: ${command}`);
+      try {
+        require('child_process').execSync(command, {
+          cwd: targetDir,
+          stdio: 'inherit',
+        });
+      } catch (error) {
+        logger.warn(`  Command failed: ${command}`);
+      }
+    }
+  }
+
   return action;
 }

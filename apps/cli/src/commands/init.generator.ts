@@ -311,6 +311,9 @@ dist
 `;
   fs.writeFileSync(path.join(projectRoot, '.gitignore'), gitignore);
 
+  // Update package.json with final dependencies
+  fs.writeJsonSync(path.join(projectRoot, 'package.json'), packageJson, { spaces: 2 });
+
   // Install dependencies
   logger.info('Installing dependencies...');
   try {
