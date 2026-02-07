@@ -58,7 +58,7 @@ authRouter.post('/login', (req: Request, res: Response) => {
   const result = loginSchema.safeParse(req.body);
 
   if (!result.success) {
-    return res.status(400).json({ errors: result.error.errors });
+    return res.status(400).json({ errors: result.error.issues });
   }
 
   // In a real app, verify credentials against DB
@@ -87,7 +87,7 @@ authRouter.post('/login', (req, res) => {
   const result = loginSchema.safeParse(req.body);
 
   if (!result.success) {
-    return res.status(400).json({ errors: result.error.errors });
+    return res.status(400).json({ errors: result.error.issues });
   }
 
   // In a real app, verify credentials against DB

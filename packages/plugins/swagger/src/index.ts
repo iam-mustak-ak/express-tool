@@ -71,9 +71,9 @@ swaggerRouter.get('/docs.json', (_, res) => res.json(docs));
 `;
 
 export const validationMiddlewareTs = `import { Request, Response, NextFunction } from 'express';
-import { AnyZodObject, ZodError } from 'zod';
+import { ZodObject, ZodError } from 'zod';
 
-export const validate = (schema: AnyZodObject) => (req: Request, res: Response, next: NextFunction) => {
+export const validate = (schema: ZodObject<any, any>) => (req: Request, res: Response, next: NextFunction) => {
   try {
     schema.parse({
       body: req.body,
@@ -85,7 +85,7 @@ export const validate = (schema: AnyZodObject) => (req: Request, res: Response, 
     if (error instanceof ZodError) {
       return res.status(400).json({
         message: 'Validation failed',
-        errors: error.errors,
+        errors: error.issues,
       });
     }
     return res.status(500).json({ message: 'Internal server error' });
@@ -107,7 +107,7 @@ export const validate = (schema) => (req, res, next) => {
     if (error instanceof ZodError) {
       return res.status(400).json({
         message: 'Validation failed',
-        errors: error.errors,
+        errors: error.issues,
       });
     }
     return res.status(500).json({ message: 'Internal server error' });

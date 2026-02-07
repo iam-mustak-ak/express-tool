@@ -109,7 +109,6 @@ export const commonPlugin: Plugin = {
               '@types/cors': 'latest',
               '@types/express': 'latest',
               '@types/node': 'latest',
-              '@types/express-rate-limit': 'latest',
               tsx: 'latest',
             }
           : {}),

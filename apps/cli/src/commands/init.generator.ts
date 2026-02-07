@@ -33,7 +33,6 @@ export async function generateBaseApp(options: InitOptions) {
     version: '0.0.0',
     private: true,
     type: 'module',
-    packageManager: `${options.packageManager}@latest`,
     scripts: {
       dev: options.language === 'ts' ? 'tsx watch src/index.ts' : 'node --watch src/index.js',
       build: options.language === 'ts' ? 'tsc' : undefined,
@@ -289,8 +288,8 @@ ${serverListen}
     const tsConfig = {
       compilerOptions: {
         target: 'ES2022',
-        module: 'NodeNext',
-        moduleResolution: 'NodeNext',
+        module: 'es2022',
+        moduleResolution: 'node',
         outDir: './dist',
         rootDir: './src',
         strict: true,

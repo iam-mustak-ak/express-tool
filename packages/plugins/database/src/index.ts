@@ -23,7 +23,7 @@ model User {
 `;
 };
 
-export const dbClientTs = `import { PrismaClient } from '@prisma/client';
+export const dbClientTs = `import { PrismaClient } from '../generated/prisma/client';;
 
 const prismaClientSingleton = () => {
   return new PrismaClient();
@@ -38,7 +38,7 @@ export const prisma = globalThis.prisma ?? prismaClientSingleton();
 if (process.env.NODE_ENV !== 'production') globalThis.prisma = prisma;
 `;
 
-export const dbClientJs = `import { PrismaClient } from '@prisma/client';
+export const dbClientJs = `import { PrismaClient } from '../generated/prisma/client';
 
 export const prisma = new PrismaClient();
 `;
@@ -60,7 +60,7 @@ export default defineConfig({
 
 export const postgresAdapterClientTs = `import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../generated/prisma/client';
 
 const connectionString = \`\${process.env.DATABASE_URL}\`;
 
@@ -72,7 +72,7 @@ export const prisma = new PrismaClient({ adapter });
 
 export const postgresAdapterClientJs = `import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../generated/prisma/client';
 
 const connectionString = \`\${process.env.DATABASE_URL}\`;
 
