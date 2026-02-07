@@ -36,12 +36,12 @@ export const qualityPlugin: Plugin = {
         husky: '^9.1.7',
         'lint-staged': '^16.2.7',
         prettier: '^3.8.1',
-        eslint: '^10.0.0',
-        'eslint-config-prettier': '^10.1.8',
+        eslint: '^8.57.0',
+        'eslint-config-prettier': '^9.1.0',
         ...(isTs
           ? {
-              '@typescript-eslint/eslint-plugin': '^8.54.0',
-              '@typescript-eslint/parser': '^8.54.0',
+              '@typescript-eslint/eslint-plugin': '^7.0.0',
+              '@typescript-eslint/parser': '^7.0.0',
             }
           : {}),
       },

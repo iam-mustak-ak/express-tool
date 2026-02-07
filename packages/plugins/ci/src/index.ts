@@ -3,7 +3,7 @@ import { Plugin, PluginContext } from '@express-tool/core';
 export const ciWorkflow = (pm: 'npm' | 'pnpm' | 'yarn' | 'bun') => {
   const installCmd =
     pm === 'npm'
-      ? 'npm install'
+      ? 'npm ci'
       : pm === 'yarn'
         ? 'yarn install --frozen-lockfile'
         : pm === 'bun'

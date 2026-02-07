@@ -31,6 +31,8 @@ ${isTs ? '' : 'COPY --from=builder /app/src ./src'}
 EXPOSE 3000
 
 CMD ["node", "${isTs ? 'dist/index.js' : 'src/index.js'}"]
+
+USER node
 `;
 };
 

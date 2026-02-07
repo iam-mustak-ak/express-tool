@@ -34,32 +34,43 @@ export async function generateBaseApp(options: InitOptions) {
     private: true,
     type: 'module',
     scripts: {
-      dev:
-        options.language === 'ts' ? 'nodemon --exec ts-node src/index.ts' : 'nodemon src/index.js',
-      build: options.language === 'ts' ? 'tsup src/index.ts --format esm --clean' : undefined,
+      dev: options.language === 'ts' ? 'tsx watch src/index.ts' : 'nodemon src/index.js',
+      build:
+        options.language === 'ts'
+          ? 'tsup src/index.ts --format esm --platform node --target es2022 --clean'
+          : undefined,
       start: options.language === 'ts' ? 'node dist/index.js' : 'node src/index.js',
+      ...(options.language === 'ts' ? { typecheck: 'tsc --noEmit', test: 'vitest' } : {}),
     },
     dependencies: {
-      express: '^5.2.1',
-      // Common dependencies are now handled by commonPlugin
+      express: '^4.21.0',
     },
     devDependencies: {
       ...(options.language === 'ts'
-        ? { '@types/node': '^25.2.1', '@types/express': '^5.0.6', tsup: '^8.1.0' }
+        ? {
+            '@types/node': '^20.12.0',
+            '@types/express': '^4.17.21',
+            tsup: '^8.1.0',
+            tsx: '^4.19.2',
+            typescript: '^5.7.0',
+          }
         : {}),
+    },
+    engines: {
+      node: '>=20.0.0',
     },
   };
 
   // Add specific dependencies based on API type
   if (options.apiType === 'rest-swagger') {
     Object.assign(packageJson.dependencies, {
-      'swagger-ui-express': '^5.0.1',
-      zod: '^4.3.6',
-      '@asteasolutions/zod-to-openapi': '^8.4.0',
+      'swagger-ui-express': '^5.0.0',
+      zod: '^3.23.8',
+      '@asteasolutions/zod-to-openapi': '^7.3.0',
     });
     if (options.language === 'ts') {
       Object.assign(packageJson.devDependencies, {
-        '@types/swagger-ui-express': '^4.1.8',
+        '@types/swagger-ui-express': '^4.1.6',
       });
     }
   }
@@ -71,25 +82,24 @@ export async function generateBaseApp(options: InitOptions) {
     });
     if (options.language === 'ts') {
       Object.assign(packageJson.devDependencies, {
-        '@types/jsonwebtoken': '^9.0.3',
+        '@types/jsonwebtoken': '^9.0.6',
       });
     }
   }
 
   // Template engine dependencies
   if (options.templateEngine !== 'none') {
+    const version = options.templateEngine === 'ejs' ? '^3.1.10' : '^3.0.3';
     Object.assign(packageJson.dependencies, {
-      [options.templateEngine]: 'latest',
+      [options.templateEngine]: version,
     });
     if (options.language === 'ts') {
+      const typesVersion = options.templateEngine === 'ejs' ? '^3.1.5' : '^2.0.10';
       Object.assign(packageJson.devDependencies, {
-        [`@types/${options.templateEngine}`]: 'latest',
+        [`@types/${options.templateEngine}`]: typesVersion,
       });
     }
   }
-
-  // TypeScript dependencies handled by quality/common plugins partly, but specific types might be here?
-  // Common plugin handles types/node, types/express, etc.
 
   fs.writeJsonSync(path.join(projectRoot, 'package.json'), packageJson, { spaces: 2 });
 
@@ -116,7 +126,6 @@ export async function generateBaseApp(options: InitOptions) {
   }
 
   // Generate Swagger Files if requested
-  // Generate Swagger Files if requested
   if (options.apiType === 'rest-swagger') {
     await executePlugin(swaggerPlugin, context, projectRoot, packageJson, envVars);
   }
@@ -130,12 +139,9 @@ export async function generateBaseApp(options: InitOptions) {
 
   // Generate Auth if requested
   if (options.auth === 'jwt') {
-    // Use auth plugin
-    const envVars: string[] = [];
     await executePlugin(authPlugin, context, projectRoot, packageJson, envVars);
   }
 
-  // Generate Views if requested
   // Generate Views if requested
   if (options.templateEngine !== 'none') {
     await executePlugin(viewsPlugin, context, projectRoot, packageJson, envVars, {
@@ -153,23 +159,19 @@ import express${options.language === 'ts' ? ', { Request, Response }' : ''} from
 import cors from 'cors';
 import helmet from 'helmet';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import pinoHttp from 'pino-http';
 import { rateLimit } from 'express-rate-limit';
 import { logger } from './utils/logger';
 import { errorHandler } from './middleware/errorHandler';
 ${options.database === 'mongodb' ? "import { connectDB } from './lib/db';" : ''}
-`;
 
-  if (options.auth === 'jwt') {
-    indexContent += `import { authRouter } from './routes/auth';\n`;
-    indexContent += `import { authenticateToken } from './middleware/auth';\n`;
-  }
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-  if (options.apiType === 'rest-swagger') {
-    indexContent += `import { swaggerRouter } from './docs/index';\n`;
-  }
+${options.auth === 'jwt' ? "import { authRouter } from './routes/auth';\nimport { authenticateToken } from './middleware/auth';" : ''}
+${options.apiType === 'rest-swagger' ? "import { swaggerRouter } from './docs/index';" : ''}
 
-  indexContent += `
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -202,11 +204,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 `;
 
   if (options.apiType === 'rest-swagger') {
-    indexContent += `app.use('/docs', swaggerRouter);\n`;
+    indexContent += `app.use('/docs', swaggerRouter);
+`;
   }
 
   if (options.auth === 'jwt') {
-    indexContent += `app.use('/auth', authRouter);\n`;
+    indexContent += `app.use('/auth', authRouter);
+`;
   }
 
   indexContent += `app.get('/', (req${options.language === 'ts' ? ': Request' : ''}, res${options.language === 'ts' ? ': Response' : ''}) => {
@@ -235,42 +239,26 @@ app.use(errorHandler);
 
 // Export app for testing
 export { app };
-`;
 
-  // Start server only if directly run
-  const serverListen = `
-const server = app.listen(port, () => {
-  logger.info(\`Server running on http://localhost:\${port}\`);
-});
-
-// Graceful Shutdown
-const shutdown = () => {
-  logger.info('SIGTERM signal received: closing HTTP server');
-  server.close(() => {
-    logger.info('HTTP server closed');
-    process.exit(0);
+// Start server
+if (process.env.NODE_ENV !== 'test') {
+  const server = app.listen(port, () => {
+    logger.info(\`Server running on http://localhost:\${port}\`);
   });
-};
 
-process.on('SIGTERM', shutdown);
-process.on('SIGINT', shutdown);
-`;
+  // Graceful Shutdown
+  const shutdown = () => {
+    logger.info('SIGTERM signal received: closing HTTP server');
+    server.close(() => {
+      logger.info('HTTP server closed');
+      process.exit(0);
+    });
+  };
 
-  if (options.language === 'ts') {
-    indexContent += `
-if (import.meta.url === \`file://\${process.argv[1]}\`) {
-${serverListen}
+  process.on('SIGTERM', shutdown);
+  process.on('SIGINT', shutdown);
 }
 `;
-  } else {
-    indexContent += `
-if (process.argv[1] === import.meta.filename) { // Node 20.11+
-${serverListen}
-} else if (import.meta.url === \`file://\${process.argv[1]}\`) {
-${serverListen}
-}
-`;
-  }
 
   const fileName = options.language === 'ts' ? 'index.ts' : 'index.js';
   fs.writeFileSync(path.join(srcDir, fileName), indexContent);
@@ -295,18 +283,17 @@ ${serverListen}
     const tsConfig = {
       compilerOptions: {
         target: 'ES2022',
-        module: 'es2022',
-        moduleResolution: 'node',
-        outDir: './dist',
+        lib: ['ES2022'],
+        module: 'ESNext',
+        moduleResolution: 'bundler',
         rootDir: './src',
+        outDir: './dist',
         strict: true,
         esModuleInterop: true,
         skipLibCheck: true,
-        forceConsistentCasingInFileNames: true,
-      },
-      'ts-node': {
-        esm: true,
-        experimentalSpecifierResolution: 'node',
+        declaration: true,
+        sourceMap: true,
+        noEmit: true,
       },
       include: ['src/**/*'],
     };

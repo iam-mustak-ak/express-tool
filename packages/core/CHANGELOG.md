@@ -1,5 +1,11 @@
 # @express-tool/core
 
+## 1.0.2
+
+### Patch Changes
+
+- Refine all plugin code templates to be production-grade. Add internal environment variable validation, graceful shutdown logic, and security hardening (non-root Docker user, JWT_SECRET production checks). Correct dependency versions and improve ESM compatibility.
+
 ## 1.0.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@express-tool/cli",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Production-grade CLI for Express.js applications",
   "keywords": [
     "express",

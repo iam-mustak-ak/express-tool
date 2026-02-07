@@ -5,6 +5,10 @@ import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret';
 
+if (process.env.NODE_ENV === 'production' && JWT_SECRET === 'fallback-secret') {
+  throw new Error('JWT_SECRET must be defined in production');
+}
+
 interface UserPayload {
   id: string;
   email: string;
@@ -27,6 +31,10 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 export const authMiddlewareJs = `import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret';
+
+if (process.env.NODE_ENV === 'production' && JWT_SECRET === 'fallback-secret') {
+  throw new Error('JWT_SECRET must be defined in production');
+}
 
 export const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -109,7 +117,7 @@ export const authPlugin: Plugin = {
       dependencies: {
         jsonwebtoken: '^9.0.3',
         // Zod is needed if not already there, but let's assume it might be needed for auth validation regardless of swagger
-        zod: '^4.3.6',
+        zod: '^3.23.8',
       },
       devDependencies: (isTs
         ? {

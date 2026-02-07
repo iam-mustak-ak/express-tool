@@ -23,7 +23,7 @@ model User {
 `;
 };
 
-export const dbClientTs = `import { PrismaClient } from '../generated/prisma/client';;
+export const dbClientTs = `import { PrismaClient } from '@prisma/client';
 
 const prismaClientSingleton = () => {
   return new PrismaClient();
@@ -38,7 +38,7 @@ export const prisma = globalThis.prisma ?? prismaClientSingleton();
 if (process.env.NODE_ENV !== 'production') globalThis.prisma = prisma;
 `;
 
-export const dbClientJs = `import { PrismaClient } from '../generated/prisma/client';
+export const dbClientJs = `import { PrismaClient } from '@prisma/client';
 
 export const prisma = new PrismaClient();
 `;
@@ -60,9 +60,13 @@ export default defineConfig({
 
 export const postgresAdapterClientTs = `import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from '../generated/prisma/client';
+import { PrismaClient } from '@prisma/client';
 
-const connectionString = \`\${process.env.DATABASE_URL}\`;
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL is not defined');
+}
+
+const connectionString = process.env.DATABASE_URL;
 
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
@@ -72,9 +76,13 @@ export const prisma = new PrismaClient({ adapter });
 
 export const postgresAdapterClientJs = `import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from '../generated/prisma/client';
+import { PrismaClient } from '@prisma/client';
 
-const connectionString = \`\${process.env.DATABASE_URL}\`;
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL is not defined');
+}
+
+const connectionString = process.env.DATABASE_URL;
 
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
@@ -182,14 +190,14 @@ export const databasePlugin: Plugin = {
 
       return {
         dependencies: {
-          '@prisma/client': '^7.3.0',
-          '@prisma/adapter-pg': '^7.3.0',
-          pg: '^8.18.0',
-          dotenv: '^17.2.4',
+          '@prisma/client': '^6.0.0',
+          '@prisma/adapter-pg': '^6.0.0',
+          pg: '^8.11.0',
+          dotenv: '^16.4.5',
         },
         devDependencies: {
-          prisma: '^7.3.0',
-          '@types/pg': '^8.16.0',
+          prisma: '^6.0.0',
+          '@types/pg': '^8.11.0',
         },
         scripts,
         commands: [initCommand],
@@ -216,10 +224,10 @@ export const databasePlugin: Plugin = {
 
     return {
       dependencies: {
-        '@prisma/client': '^5.16.1',
+        '@prisma/client': '^6.0.0',
       },
       devDependencies: {
-        prisma: '^5.16.1',
+        prisma: '^6.0.0',
       },
       scripts: {
         postinstall: 'prisma generate',

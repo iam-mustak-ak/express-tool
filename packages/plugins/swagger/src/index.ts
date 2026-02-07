@@ -122,15 +122,15 @@ export const swaggerPlugin: Plugin = {
 
     return {
       dependencies: {
-        'swagger-ui-express': '^5.0.1',
-        zod: '^4.3.6',
-        '@asteasolutions/zod-to-openapi': '^8.4.0',
+        'swagger-ui-express': '^5.0.0',
+        zod: '^3.23.8',
+        '@asteasolutions/zod-to-openapi': '^7.3.0',
       },
-      devDependencies: isTs
+      devDependencies: (isTs
         ? {
-            '@types/swagger-ui-express': '^4.1.8',
+            '@types/swagger-ui-express': '^4.1.6',
           }
-        : {},
+        : {}) as Record<string, string>,
       files: [
         {
           path: isTs ? 'docs/generator.ts' : 'docs/generator.js',

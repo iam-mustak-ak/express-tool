@@ -4,7 +4,7 @@ export const loggerTs = `import pino from 'pino';
 
 export const logger = pino({
   level: process.env.LOG_LEVEL || 'info',
-  transport: {
+  transport: process.env.NODE_ENV === 'production' ? undefined : {
     target: 'pino-pretty',
     options: {
       colorize: true,
@@ -17,7 +17,7 @@ export const loggerJs = `import pino from 'pino';
 
 export const logger = pino({
   level: process.env.LOG_LEVEL || 'info',
-  transport: {
+  transport: process.env.NODE_ENV === 'production' ? undefined : {
     target: 'pino-pretty',
     options: {
       colorize: true,
@@ -95,22 +95,21 @@ export const commonPlugin: Plugin = {
 
     return {
       dependencies: {
-        pino: '^10.3.0',
-        'pino-http': '^11.0.0',
-        helmet: '^8.1.0',
-        cors: '^2.8.6',
-        'express-rate-limit': '^8.2.1',
-        dotenv: '^17.2.4',
+        pino: '^9.0.0',
+        'pino-http': '^10.0.0',
+        'pino-pretty': '^13.0.0',
+        helmet: '^8.0.0',
+        cors: '^2.8.5',
+        'express-rate-limit': '^7.2.0',
+        dotenv: '^16.4.5',
       },
       devDependencies: {
-        'pino-pretty': '^13.1.3',
-        nodemon: '^3.1.11',
+        nodemon: '^3.1.0',
         ...(isTs
           ? {
-              '@types/cors': '^2.8.19',
-              '@types/express': '^5.0.6',
-              '@types/node': '^25.2.1',
-              'ts-node': '^10.9.2',
+              '@types/cors': '^2.8.17',
+              '@types/express': '^5.0.0',
+              '@types/node': '^20.12.0',
             }
           : {}),
       },

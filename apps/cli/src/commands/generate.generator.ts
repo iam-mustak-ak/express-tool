@@ -24,7 +24,11 @@ export async function generateResource(name: string) {
   }
 
   const packageJson = fs.readJsonSync(packageJsonPath);
-  const isTs = packageJson.devDependencies && packageJson.devDependencies.typescript;
+  const isTs =
+    fs.existsSync(path.join(projectRoot, 'tsconfig.json')) ||
+    (packageJson.devDependencies && packageJson.devDependencies.typescript) ||
+    (packageJson.dependencies && packageJson.dependencies.typescript);
+
   const ext = isTs ? 'ts' : 'js';
 
   const srcDir = path.join(projectRoot, 'src');
