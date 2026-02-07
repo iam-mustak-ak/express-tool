@@ -296,6 +296,8 @@ ${serverListen}
         rootDir: './src',
         strict: true,
         esModuleInterop: true,
+        skipLibCheck: true,
+        forceConsistentCasingInFileNames: true,
       },
       include: ['src/**/*'],
     };
