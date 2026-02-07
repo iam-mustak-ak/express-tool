@@ -69,7 +69,13 @@ pnpm --filter @express-tool/cli start -- --help
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see the [Development Guide](./DEVELOPMENT.md) for details on the workflow.
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to get started.
+
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+## 🔐 Security
+
+If you discover a security vulnerability, please see our [Security Policy](SECURITY.md) for instructions on how to urge a report.
 
 ## 📄 License
 
