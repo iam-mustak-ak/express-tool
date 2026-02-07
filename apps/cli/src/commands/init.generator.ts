@@ -36,7 +36,7 @@ export async function generateBaseApp(options: InitOptions) {
     scripts: {
       dev:
         options.language === 'ts' ? 'nodemon --exec ts-node src/index.ts' : 'nodemon src/index.js',
-      build: options.language === 'ts' ? 'tsc' : undefined,
+      build: options.language === 'ts' ? 'tsup src/index.ts --format esm --clean' : undefined,
       start: options.language === 'ts' ? 'node dist/index.js' : 'node src/index.js',
     },
     dependencies: {
@@ -45,7 +45,7 @@ export async function generateBaseApp(options: InitOptions) {
     },
     devDependencies: {
       ...(options.language === 'ts'
-        ? { '@types/node': '^25.2.1', '@types/express': '^5.0.6' }
+        ? { '@types/node': '^25.2.1', '@types/express': '^5.0.6', tsup: '^8.1.0' }
         : {}),
     },
   };
@@ -111,7 +111,9 @@ export async function generateBaseApp(options: InitOptions) {
   await executePlugin(commonPlugin, context, projectRoot, packageJson, envVars);
 
   // Apply Middleware Plugin
-  await executePlugin(middlewarePlugin, context, projectRoot, packageJson, envVars);
+  if (options.validation) {
+    await executePlugin(middlewarePlugin, context, projectRoot, packageJson, envVars);
+  }
 
   // Generate Swagger Files if requested
   // Generate Swagger Files if requested
@@ -275,7 +277,9 @@ ${serverListen}
 
   // --- Step 9: Testing & Quality ---
   await executePlugin(testingPlugin, context, projectRoot, packageJson, envVars);
-  await executePlugin(qualityPlugin, context, projectRoot, packageJson, envVars);
+  if (options.linting) {
+    await executePlugin(qualityPlugin, context, projectRoot, packageJson, envVars);
+  }
 
   // --- Step 10: Docker & CI ---
   await executePlugin(dockerPlugin, context, projectRoot, packageJson, envVars, {
@@ -299,6 +303,10 @@ ${serverListen}
         esModuleInterop: true,
         skipLibCheck: true,
         forceConsistentCasingInFileNames: true,
+      },
+      'ts-node': {
+        esm: true,
+        experimentalSpecifierResolution: 'node',
       },
       include: ['src/**/*'],
     };

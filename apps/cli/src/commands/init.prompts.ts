@@ -17,6 +17,8 @@ export const initOptionsSchema = z.object({
   auth: z.enum(['jwt', 'none']),
   templateEngine: z.enum(['ejs', 'pug', 'none']),
   packageManager: z.enum(['npm', 'pnpm', 'yarn', 'bun']),
+  linting: z.boolean(),
+  validation: z.boolean(),
 });
 
 export type InitOptions = z.infer<typeof initOptionsSchema>;
@@ -113,6 +115,18 @@ export async function promptInitOptions(): Promise<InitOptions> {
           { title: 'None (API only)', value: 'none' },
         ],
         initial: 0,
+      },
+      {
+        type: 'confirm',
+        name: 'linting',
+        message: 'Do you want to include code quality tools (Linting & Formatting)?',
+        initial: true,
+      },
+      {
+        type: 'confirm',
+        name: 'validation',
+        message: 'Do you want to include runtime validation (Zod)?',
+        initial: true,
       },
     ],
     {
