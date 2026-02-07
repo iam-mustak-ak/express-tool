@@ -150,7 +150,7 @@ export const databasePlugin: Plugin = {
     if (database === 'mongodb') {
       return {
         dependencies: {
-          mongoose: 'latest',
+          mongoose: '^8.5.1',
         },
         files: [
           {
@@ -182,14 +182,14 @@ export const databasePlugin: Plugin = {
 
       return {
         dependencies: {
-          '@prisma/client': 'latest',
-          '@prisma/adapter-pg': 'latest',
-          pg: 'latest',
-          dotenv: 'latest',
+          '@prisma/client': '^7.3.0',
+          '@prisma/adapter-pg': '^7.3.0',
+          pg: '^8.18.0',
+          dotenv: '^17.2.4',
         },
         devDependencies: {
-          prisma: 'latest',
-          '@types/pg': 'latest',
+          prisma: '^7.3.0',
+          '@types/pg': '^8.16.0',
         },
         scripts,
         commands: [initCommand],
@@ -216,10 +216,10 @@ export const databasePlugin: Plugin = {
 
     return {
       dependencies: {
-        '@prisma/client': 'latest',
+        '@prisma/client': '^5.16.1',
       },
       devDependencies: {
-        prisma: 'latest',
+        prisma: '^5.16.1',
       },
       scripts: {
         postinstall: 'prisma generate',

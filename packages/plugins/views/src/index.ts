@@ -86,11 +86,11 @@ export const viewsPlugin: Plugin = {
 
     return {
       dependencies: {
-        [templateEngine]: 'latest',
+        [templateEngine]: templateEngine === 'ejs' ? '^3.1.10' : '^3.0.3',
       },
       devDependencies: isTs
         ? {
-            [`@types/${templateEngine}`]: 'latest',
+            [`@types/${templateEngine}`]: templateEngine === 'ejs' ? '^3.1.5' : '^2.0.10',
           }
         : {},
       files: [

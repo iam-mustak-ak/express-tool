@@ -95,21 +95,22 @@ export const commonPlugin: Plugin = {
 
     return {
       dependencies: {
-        pino: 'latest',
-        'pino-http': 'latest',
-        helmet: 'latest',
-        cors: 'latest',
-        'express-rate-limit': 'latest',
-        dotenv: 'latest',
+        pino: '^10.3.0',
+        'pino-http': '^11.0.0',
+        helmet: '^8.1.0',
+        cors: '^2.8.6',
+        'express-rate-limit': '^8.2.1',
+        dotenv: '^17.2.4',
       },
       devDependencies: {
-        'pino-pretty': 'latest',
+        'pino-pretty': '^13.1.3',
+        nodemon: '^3.1.11',
         ...(isTs
           ? {
-              '@types/cors': 'latest',
-              '@types/express': 'latest',
-              '@types/node': 'latest',
-              tsx: 'latest',
+              '@types/cors': '^2.8.19',
+              '@types/express': '^5.0.6',
+              '@types/node': '^25.2.1',
+              'ts-node': '^10.9.2',
             }
           : {}),
       },

@@ -33,15 +33,15 @@ export const qualityPlugin: Plugin = {
 
     return {
       devDependencies: {
-        husky: 'latest',
-        'lint-staged': 'latest',
-        prettier: 'latest',
-        eslint: 'latest',
-        'eslint-config-prettier': 'latest',
+        husky: '^9.1.7',
+        'lint-staged': '^16.2.7',
+        prettier: '^3.8.1',
+        eslint: '^10.0.0',
+        'eslint-config-prettier': '^10.1.8',
         ...(isTs
           ? {
-              '@typescript-eslint/eslint-plugin': 'latest',
-              '@typescript-eslint/parser': 'latest',
+              '@typescript-eslint/eslint-plugin': '^8.54.0',
+              '@typescript-eslint/parser': '^8.54.0',
             }
           : {}),
       },

@@ -34,29 +34,32 @@ export async function generateBaseApp(options: InitOptions) {
     private: true,
     type: 'module',
     scripts: {
-      dev: options.language === 'ts' ? 'tsx watch src/index.ts' : 'node --watch src/index.js',
+      dev:
+        options.language === 'ts' ? 'nodemon --exec ts-node src/index.ts' : 'nodemon src/index.js',
       build: options.language === 'ts' ? 'tsc' : undefined,
       start: options.language === 'ts' ? 'node dist/index.js' : 'node src/index.js',
     },
     dependencies: {
-      express: 'latest',
+      express: '^5.2.1',
       // Common dependencies are now handled by commonPlugin
     },
     devDependencies: {
-      ...(options.language === 'ts' ? { '@types/node': 'latest', '@types/express': 'latest' } : {}),
+      ...(options.language === 'ts'
+        ? { '@types/node': '^25.2.1', '@types/express': '^5.0.6' }
+        : {}),
     },
   };
 
   // Add specific dependencies based on API type
   if (options.apiType === 'rest-swagger') {
     Object.assign(packageJson.dependencies, {
-      'swagger-ui-express': 'latest',
-      zod: 'latest',
-      '@asteasolutions/zod-to-openapi': 'latest',
+      'swagger-ui-express': '^5.0.1',
+      zod: '^4.3.6',
+      '@asteasolutions/zod-to-openapi': '^8.4.0',
     });
     if (options.language === 'ts') {
       Object.assign(packageJson.devDependencies, {
-        '@types/swagger-ui-express': 'latest',
+        '@types/swagger-ui-express': '^4.1.8',
       });
     }
   }
@@ -64,11 +67,11 @@ export async function generateBaseApp(options: InitOptions) {
   // Auth dependencies
   if (options.auth === 'jwt') {
     Object.assign(packageJson.dependencies, {
-      jsonwebtoken: 'latest',
+      jsonwebtoken: '^9.0.2',
     });
     if (options.language === 'ts') {
       Object.assign(packageJson.devDependencies, {
-        '@types/jsonwebtoken': 'latest',
+        '@types/jsonwebtoken': '^9.0.3',
       });
     }
   }
