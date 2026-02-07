@@ -1,5 +1,13 @@
 # @express-tool/plugin-quality
 
+## 1.0.1
+
+### Patch Changes
+
+- Optimized project generation, updated dependencies, and added open-source documentation.
+- Updated dependencies
+  - @express-tool/core@1.0.1
+
 ## 1.0.0
 
 ### Major Changes

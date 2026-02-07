@@ -1,5 +1,24 @@
 # @express-tool/cli
 
+## 1.0.1
+
+### Patch Changes
+
+- Optimized project generation, updated dependencies, and added open-source documentation.
+- Updated dependencies
+  - @express-tool/core@1.0.1
+  - @express-tool/plugin-auth@1.0.1
+  - @express-tool/plugin-ci@1.0.1
+  - @express-tool/plugin-common@1.0.1
+  - @express-tool/plugin-database@1.0.1
+  - @express-tool/plugin-docker@1.0.1
+  - @express-tool/plugin-middleware@1.0.1
+  - @express-tool/plugin-quality@1.0.1
+  - @express-tool/plugin-resource@1.0.1
+  - @express-tool/plugin-swagger@1.0.1
+  - @express-tool/plugin-testing@1.0.1
+  - @express-tool/plugin-views@1.0.1
+
 ## 1.0.0
 
 ### Major Changes
