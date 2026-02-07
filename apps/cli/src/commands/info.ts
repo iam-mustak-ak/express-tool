@@ -14,7 +14,7 @@ export const info = new Command()
         Utilities: ['Git'],
         IDEs: ['VSCode'],
         Browsers: ['Chrome', 'Edge', 'Firefox', 'Safari'],
-        npmPackages: ['typescript', 'express', 'express-next'],
+        npmPackages: ['typescript', 'express', 'express-tool'],
       },
       {
         console: true,

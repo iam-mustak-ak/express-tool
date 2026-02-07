@@ -122,13 +122,13 @@ export const swaggerPlugin: Plugin = {
 
     return {
       dependencies: {
-        'swagger-ui-express': '^5.0.0',
-        zod: '^3.22.4',
-        '@asteasolutions/zod-to-openapi': '^7.0.0',
+        'swagger-ui-express': 'latest',
+        zod: 'latest',
+        '@asteasolutions/zod-to-openapi': 'latest',
       },
       devDependencies: isTs
         ? {
-            '@types/swagger-ui-express': '^4.1.6',
+            '@types/swagger-ui-express': 'latest',
           }
         : {},
       files: [

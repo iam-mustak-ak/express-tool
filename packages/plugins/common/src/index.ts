@@ -95,20 +95,24 @@ export const commonPlugin: Plugin = {
 
     return {
       dependencies: {
-        pino: '^8.19.0',
-        'pino-http': '^9.0.0',
-        helmet: '^7.1.0',
-        cors: '^2.8.5',
-        'express-rate-limit': '^7.2.0',
-        dotenv: '^16.4.5',
+        pino: 'latest',
+        'pino-http': 'latest',
+        helmet: 'latest',
+        cors: 'latest',
+        'express-rate-limit': 'latest',
+        dotenv: 'latest',
       },
       devDependencies: {
-        'pino-pretty': '^10.3.1',
-        '@types/cors': '^2.8.17',
-        '@types/express': '^4.17.21',
-        '@types/node': '^20.11.0',
-        '@types/express-rate-limit': '^6.0.0',
-        tsx: '^4.7.1',
+        'pino-pretty': 'latest',
+        ...(isTs
+          ? {
+              '@types/cors': 'latest',
+              '@types/express': 'latest',
+              '@types/node': 'latest',
+              '@types/express-rate-limit': 'latest',
+              tsx: 'latest',
+            }
+          : {}),
       },
       files: [
         {

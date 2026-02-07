@@ -8,12 +8,12 @@ import { initCommand } from './commands/init';
 export const cli = new Command();
 
 cli
-  .name('express-next')
+  .name('express-tool')
   .description('Production-grade CLI for Express.js applications')
   .version(version);
 
 cli.hook('preAction', () => {
-  logger.info('Welcome to express-next CLI');
+  logger.info('Welcome to express-tool CLI');
 });
 
 import { generate } from './commands/generate';

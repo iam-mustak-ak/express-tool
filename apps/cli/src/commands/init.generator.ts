@@ -40,24 +40,24 @@ export async function generateBaseApp(options: InitOptions) {
       start: options.language === 'ts' ? 'node dist/index.js' : 'node src/index.js',
     },
     dependencies: {
-      express: '^4.18.2',
+      express: 'latest',
       // Common dependencies are now handled by commonPlugin
     },
     devDependencies: {
-      // Dev dependencies handled by plugins
+      ...(options.language === 'ts' ? { '@types/node': 'latest', '@types/express': 'latest' } : {}),
     },
   };
 
   // Add specific dependencies based on API type
   if (options.apiType === 'rest-swagger') {
     Object.assign(packageJson.dependencies, {
-      'swagger-ui-express': '^5.0.0',
-      zod: '^3.22.4',
-      '@asteasolutions/zod-to-openapi': '^7.0.0',
+      'swagger-ui-express': 'latest',
+      zod: 'latest',
+      '@asteasolutions/zod-to-openapi': 'latest',
     });
     if (options.language === 'ts') {
       Object.assign(packageJson.devDependencies, {
-        '@types/swagger-ui-express': '^4.1.6',
+        '@types/swagger-ui-express': 'latest',
       });
     }
   }
@@ -65,11 +65,11 @@ export async function generateBaseApp(options: InitOptions) {
   // Auth dependencies
   if (options.auth === 'jwt') {
     Object.assign(packageJson.dependencies, {
-      jsonwebtoken: '^9.0.2',
+      jsonwebtoken: 'latest',
     });
     if (options.language === 'ts') {
       Object.assign(packageJson.devDependencies, {
-        '@types/jsonwebtoken': '^9.0.5',
+        '@types/jsonwebtoken': 'latest',
       });
     }
   }
@@ -77,12 +77,11 @@ export async function generateBaseApp(options: InitOptions) {
   // Template engine dependencies
   if (options.templateEngine !== 'none') {
     Object.assign(packageJson.dependencies, {
-      [options.templateEngine]: options.templateEngine === 'ejs' ? '^3.1.9' : '^3.0.2',
+      [options.templateEngine]: 'latest',
     });
     if (options.language === 'ts') {
       Object.assign(packageJson.devDependencies, {
-        [`@types/${options.templateEngine}`]:
-          options.templateEngine === 'ejs' ? '^3.1.5' : '^2.0.10',
+        [`@types/${options.templateEngine}`]: 'latest',
       });
     }
   }
@@ -146,7 +145,7 @@ export async function generateBaseApp(options: InitOptions) {
 
   // Generate index logic
   let indexContent = `import 'dotenv/config';
-import express from 'express';
+import express${options.language === 'ts' ? ', { Request, Response }' : ''} from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import path from 'path';
@@ -206,7 +205,7 @@ app.use(express.static(path.join(__dirname, 'public')));
     indexContent += `app.use('/auth', authRouter);\n`;
   }
 
-  indexContent += `app.get('/', (req, res) => {
+  indexContent += `app.get('/', (req${options.language === 'ts' ? ': Request' : ''}, res${options.language === 'ts' ? ': Response' : ''}) => {
   ${
     options.templateEngine !== 'none'
       ? `res.render('index', { title: 'Express App', message: 'Hello from ${options.templateEngine.toUpperCase()}!' });`
@@ -214,14 +213,14 @@ app.use(express.static(path.join(__dirname, 'public')));
   }
 });
 
-app.get('/health', (req, res) => {
+app.get('/health', (req${options.language === 'ts' ? ': Request' : ''}, res${options.language === 'ts' ? ': Response' : ''}) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 `;
 
   if (options.auth === 'jwt') {
     indexContent += `
-app.get('/protected', authenticateToken, (req, res) => {
+app.get('/protected', authenticateToken, (req${options.language === 'ts' ? ': Request' : ''}, res${options.language === 'ts' ? ': Response' : ''}) => {
   res.json({ message: 'This is a protected route', user: (req as any).user });
 });\n`;
   }
@@ -312,5 +311,23 @@ dist
 `;
   fs.writeFileSync(path.join(projectRoot, '.gitignore'), gitignore);
 
+  // Install dependencies
+  logger.info('Installing dependencies...');
+  try {
+    const installCmd = options.packageManager === 'npm' ? 'install' : 'install';
+    // pnpm install, yarn install, npm install
+    require('child_process').execSync(`${options.packageManager} ${installCmd}`, {
+      cwd: projectRoot,
+      stdio: 'inherit',
+    });
+  } catch (error) {
+    logger.warn('Failed to install dependencies. Please run install manually.');
+  }
+
   logger.success(`Project ${options.projectName} created successfully!`);
+
+  console.log(`\nNext steps:`);
+  console.log(`  cd ${options.projectName}`);
+  console.log(`  ${options.packageManager} run dev`);
+  console.log(`\nHappy Coding! 🚀\n`);
 }

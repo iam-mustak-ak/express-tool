@@ -5,11 +5,11 @@
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iam-mustak-ak/express-next.git"
+    "url": "git+https://github.com/iam-mustak-ak/express-tool.git"
   },
-  "homepage": "https://github.com/iam-mustak-ak/express-next",
+  "homepage": "https://github.com/iam-mustak-ak/express-tool",
   "bugs": {
-    "url": "https://github.com/iam-mustak-ak/express-next/issues"
+    "url": "https://github.com/iam-mustak-ak/express-tool/issues"
   },
   "publishConfig": {
     "access": "public"

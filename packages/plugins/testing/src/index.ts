@@ -71,11 +71,11 @@ export const testingPlugin: Plugin = {
 
     return {
       devDependencies: {
-        vitest: '^1.3.1',
-        supertest: '^6.3.4',
+        vitest: 'latest',
+        supertest: 'latest',
         ...(isTs
           ? {
-              '@types/supertest': '^6.0.2',
+              '@types/supertest': 'latest',
             }
           : {}),
       },

@@ -12,8 +12,8 @@ Welcome to the development guide for **Express Tool** (`@express-tool`). This gu
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/iam-mustak-ak/express-next.git
-cd express-next
+git clone https://github.com/iam-mustak-ak/express-tool.git
+cd express-tool
 ```
 
 ### 2. Install Dependencies
@@ -90,7 +90,50 @@ The repository is organized as a monorepo using pnpm workspaces:
   - `resource`: Code generators
   - ...and more.
 
-## 🧪 Testing
+## � Plugin Development
+
+### Creating a New Plugin
+
+To add a new capability to `express-tool`, create a new package in `packages/plugins/`:
+
+1.  **Create Directory**: Make a folder `packages/plugins/<plugin-name>`.
+2.  **Initialize `package.json`**:
+    - Name it `@express-tool/plugin-<name>`.
+    - Add `@express-tool/core` as a dependency (use `workspace:*` version).
+    - Set `main` to `dist/index.js`, `module` to `dist/index.mjs`, and `types` to `dist/index.d.ts`.
+3.  **Implement Plugin Interface**:
+    In `src/index.ts`, export a `Plugin` object:
+
+    ```typescript
+    import { Plugin, PluginContext } from '@express-tool/core';
+
+    export const myPlugin: Plugin = {
+      name: 'my-plugin',
+      apply: async (context: PluginContext) => {
+        return {
+          dependencies: { 'some-lib': 'latest' },
+          files: [{ path: 'src/feature.ts', content: '...' }],
+        };
+      },
+    };
+    ```
+
+4.  **Register (Optional)**: If this is a core plugin intended to be used by the CLI prompt, you'll need to import and register it in `apps/cli/src/commands/init.generator.ts` and update prompts in `init.prompts.ts`.
+
+### Modifying Plugins
+
+Plugins are standard npm packages within the workspace.
+
+1.  **Edit Code**: Navigate to `packages/plugins/<plugin-name>` and modify `src/index.ts`.
+2.  **Build**: Run `pnpm build` from the root or the plugin directory to update the `dist` artifacts.
+    - _Tip_: You can run `pnpm build --filter @express-tool/plugin-<name>` to build just one plugin.
+3.  **Test**: Run the CLI locally to verify your changes:
+    ```bash
+    cd apps/cli
+    pnpm start init
+    ```
+
+## �🧪 Testing
 
 We use Vitest for testing.
 

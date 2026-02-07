@@ -204,7 +204,7 @@ If you want to contribute to the project or run it from source, please check out
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request on our [GitHub Repository](https://github.com/iam-mustak-ak/express-next.git).
+Contributions are welcome! Please open an issue or submit a pull request on our [GitHub Repository](https://github.com/iam-mustak-ak/express-tool.git).
 
 ## 📄 License
 

@@ -111,7 +111,7 @@ export const databasePlugin: Plugin = {
     if (database === 'mongodb') {
       return {
         dependencies: {
-          mongoose: '^8.2.0',
+          mongoose: 'latest',
         },
         files: [
           {
@@ -137,10 +137,10 @@ export const databasePlugin: Plugin = {
 
     return {
       dependencies: {
-        '@prisma/client': '^5.10.0',
+        '@prisma/client': 'latest',
       },
       devDependencies: {
-        prisma: '^5.10.0',
+        prisma: 'latest',
       },
       scripts: {
         postinstall: 'prisma generate',

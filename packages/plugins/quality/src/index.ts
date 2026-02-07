@@ -33,15 +33,15 @@ export const qualityPlugin: Plugin = {
 
     return {
       devDependencies: {
-        husky: '^9.0.11',
-        'lint-staged': '^15.2.2',
-        prettier: '^3.2.5',
-        eslint: '^8.57.0',
-        'eslint-config-prettier': '^9.1.0',
+        husky: 'latest',
+        'lint-staged': 'latest',
+        prettier: 'latest',
+        eslint: 'latest',
+        'eslint-config-prettier': 'latest',
         ...(isTs
           ? {
-              '@typescript-eslint/eslint-plugin': '^7.1.0',
-              '@typescript-eslint/parser': '^7.1.0',
+              '@typescript-eslint/eslint-plugin': 'latest',
+              '@typescript-eslint/parser': 'latest',
             }
           : {}),
       },
@@ -62,7 +62,7 @@ export const qualityPlugin: Plugin = {
         {
           // We need package.json update for lint-staged but the plugin interface supports merging package.json fields?
           // No, only scripts, dependencies, devDependencies.
-          // I updated PluginAction in my head but not in @express-next/core/src/index.ts?
+          // I updated PluginAction in my head but not in @express-tool/core/src/index.ts?
           // I should check PluginAction definition. If it doesn't support generic packageJson updates, I can't easily add lint-staged config.
           // But I can write it to a file if supported? `.lintstagedrc`?
           // For now, I'll stick to writing it to a file or extending the core plugin interface later.

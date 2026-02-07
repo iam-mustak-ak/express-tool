@@ -107,13 +107,13 @@ export const authPlugin: Plugin = {
 
     return {
       dependencies: {
-        jsonwebtoken: '^9.0.2',
+        jsonwebtoken: 'latest',
         // Zod is needed if not already there, but let's assume it might be needed for auth validation regardless of swagger
-        zod: '^3.22.4',
+        zod: 'latest',
       },
       devDependencies: (isTs
         ? {
-            '@types/jsonwebtoken': '^9.0.5',
+            '@types/jsonwebtoken': 'latest',
           }
         : {}) as Record<string, string>,
       files: [

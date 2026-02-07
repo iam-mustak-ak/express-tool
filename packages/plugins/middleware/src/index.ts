@@ -52,7 +52,7 @@ export const middlewarePlugin: Plugin = {
 
     return {
       dependencies: {
-        zod: '^3.22.4',
+        zod: 'latest',
       },
       files: [
         {

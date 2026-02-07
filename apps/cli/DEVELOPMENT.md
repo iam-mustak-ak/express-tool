@@ -12,8 +12,8 @@ This guide will help you set up your environment to develop and test the **Expre
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/iam-mustak-ak/express-next.git
-cd express-next
+git clone https://github.com/iam-mustak-ak/express-toll.git
+cd express-toll
 ```
 
 ### 2. Install Dependencies
