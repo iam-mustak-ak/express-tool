@@ -48,7 +48,7 @@ describe('App Integration Tests', () => {
 
 export const appTestJs = `import { describe, it, expect } from 'vitest';
 import request from 'supertest';
-import { app } from '../src/index';
+import { app } from '../src/index.js';
 
 describe('App Integration Tests', () => {
   it('GET /health should return 200 OK', async () => {

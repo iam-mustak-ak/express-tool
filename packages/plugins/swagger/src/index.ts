@@ -36,7 +36,7 @@ swaggerRouter.get('/docs.json', (_, res) => res.json(docs));
 `;
 
 export const swaggerConfigJs = `import { OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
-import { registry } from './registry';
+import { registry } from './registry.js';
 
 export function generateOpenApiDocs() {
   const generator = new OpenApiGeneratorV3(registry.definitions);
@@ -60,7 +60,7 @@ export const registry = new OpenAPIRegistry();
 
 export const swaggerIndexJs = `import swaggerUi from 'swagger-ui-express';
 import { Router } from 'express';
-import { generateOpenApiDocs } from './generator';
+import { generateOpenApiDocs } from './generator.js';
 
 export const swaggerRouter = Router();
 

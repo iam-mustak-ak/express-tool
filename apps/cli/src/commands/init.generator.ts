@@ -34,12 +34,18 @@ export async function generateBaseApp(options: InitOptions) {
     private: true,
     type: 'module',
     scripts: {
-      dev: options.language === 'ts' ? 'tsx watch src/index.ts' : 'nodemon src/index.js',
+      dev:
+        options.language === 'ts'
+          ? 'tsx watch src/index.ts'
+          : 'nodemon --experimental-specifier-resolution=node src/index.js',
       build:
         options.language === 'ts'
           ? 'tsup src/index.ts --format esm --platform node --target es2022 --clean'
           : undefined,
-      start: options.language === 'ts' ? 'node dist/index.js' : 'node src/index.js',
+      start:
+        options.language === 'ts'
+          ? 'node dist/index.js'
+          : 'node --experimental-specifier-resolution=node src/index.js',
       ...(options.language === 'ts' ? { typecheck: 'tsc --noEmit', test: 'vitest' } : {}),
     },
     dependencies: {
@@ -163,15 +169,15 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import pinoHttp from 'pino-http';
 import { rateLimit } from 'express-rate-limit';
-import { logger } from './utils/logger';
-import { errorHandler } from './middleware/errorHandler';
-${options.database === 'mongodb' ? "import { connectDB } from './lib/db';" : ''}
+import { logger } from './utils/logger${options.language === 'ts' ? '' : '.js'}';
+import { errorHandler } from './middleware/errorHandler${options.language === 'ts' ? '' : '.js'}';
+${options.database === 'mongodb' ? `import { connectDB } from './lib/db${options.language === 'ts' ? '' : '.js'}';` : ''}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-${options.auth === 'jwt' ? "import { authRouter } from './routes/auth';\nimport { authenticateToken } from './middleware/auth';" : ''}
-${options.apiType === 'rest-swagger' ? "import { swaggerRouter } from './docs/index';" : ''}
+${options.auth === 'jwt' ? `import { authRouter } from './routes/auth${options.language === 'ts' ? '' : '.js'}';\nimport { authenticateToken } from './middleware/auth${options.language === 'ts' ? '' : '.js'}';` : ''}
+${options.apiType === 'rest-swagger' ? `import { swaggerRouter } from './docs/index${options.language === 'ts' ? '' : '.js'}';` : ''}
 
 const app = express();
 const port = process.env.PORT || 3000;

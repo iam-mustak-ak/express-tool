@@ -59,7 +59,7 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
 };
 `;
 
-export const errorHandlerJs = `import { logger } from '../utils/logger';
+export const errorHandlerJs = `import { logger } from '../utils/logger.js';
 
 export class AppError extends Error {
   constructor(message, statusCode) {

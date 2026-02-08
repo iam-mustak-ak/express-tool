@@ -76,7 +76,7 @@ export async function generateResource(name: string) {
   logger.success(`Feature ${name} generated successfully!`);
   logger.info(`\nDon't forget to register the route in src/index.${ext}:`);
   logger.info(
-    `import { ${name.toLowerCase()}Router } from './routes/${name.toLowerCase()}.routes';`,
+    `import { ${name.toLowerCase()}Router } from './routes/${name.toLowerCase()}.routes${isTs ? '' : '.js'}';`,
   );
   logger.info(`app.use('/${name.toLowerCase()}s', ${name.toLowerCase()}Router);`);
 }

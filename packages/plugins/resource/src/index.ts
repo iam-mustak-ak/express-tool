@@ -77,7 +77,7 @@ export const delete${name} = async (req: Request, res: Response, next: NextFunct
 };
 `;
 
-export const controllerJs = (name: string) => `import { logger } from '../utils/logger';
+export const controllerJs = (name: string) => `import { logger } from '../utils/logger.js';
 
 export const get${name}s = async (req, res, next) => {
   try {
@@ -165,7 +165,7 @@ export const ${name.toLowerCase()}Router = router;
 `;
 
 export const routesJs = (name: string) => `import { Router } from 'express';
-import * as ${name.toLowerCase()}Controller from '../controllers/${name.toLowerCase()}.controller';
+import * as ${name.toLowerCase()}Controller from '../controllers/${name.toLowerCase()}.controller.js';
 
 const router = Router();
 
@@ -204,7 +204,7 @@ describe('${name} API', () => {
 `;
 
 export const testJs = (name: string) => `import request from 'supertest';
-import { app } from '../src/index';
+import { app } from '../src/index.js';
 import { describe, it, expect } from 'vitest';
 
 describe('${name} API', () => {

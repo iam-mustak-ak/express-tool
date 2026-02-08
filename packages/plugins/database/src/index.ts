@@ -118,7 +118,7 @@ export const connectDB = async (): Promise<void> => {
 `;
 
 export const mongooseClientJs = `import mongoose from 'mongoose';
-import { logger } from '../utils/logger';
+import { logger } from '../utils/logger.js';
 
 export const connectDB = async () => {
   try {
