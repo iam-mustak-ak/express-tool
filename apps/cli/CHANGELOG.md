@@ -1,5 +1,11 @@
 # @express-tool/cli
 
+## 1.0.4
+
+### Patch Changes
+
+- Update all project dependencies to latest versions, add support for extensionless JS imports, and switch to ESLint Flat Config.
+
 ## 1.0.3
 
 ### Patch Changes

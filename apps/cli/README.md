@@ -16,9 +16,10 @@ A production-grade Command Line Interface for generating robust, scalable Expres
 - **Language Support**: First-class TypeScript support (recommended) or modern JavaScript (ES Modules).
 - **Architecture**: Choose between **Feature-based** (great for scalability) or Classic **MVC**.
 - **Database Integration**:
-  - **Prisma ORM**: PostgreSQL, MySQL, MongoDB.
+  - **Prisma ORM**: PostgreSQL (Self-managed or Managed), MySQL, MongoDB.
   - **Mongoose**: Native MongoDB support.
 - **Authentication**: Built-in simple JWT authentication boilerplate.
+- **Template Engines**: Support for Server-Side Rendering (SSR) with **EJS** or **Pug**.
 - **API Documentation**: Automatic Swagger/OpenAPI options.
 - **Package Managers**: Support for `npm`, `pnpm`, `yarn`, and `bun`.
 - **Production Ready**:
@@ -97,19 +98,28 @@ express-tool init
 
 1. **Project Name**: Name of your project directory (kebab-case).
 2. **Language**: `TypeScript` (Recommended) or `JavaScript`.
-3. **Architecture**:
+3. **Package Manager**: Select `npm`, `pnpm`, `yarn`, or `bun`.
+4. **Architecture**:
    - `Feature-based`: Groups files by domain feature (e.g., `src/modules/users/`).
    - `MVC`: Classic layering (`src/controllers`, `src/routes`, `src/models`).
-4. **API Type**:
+5. **API Type**:
    - `REST API + Swagger`: Includes setup for auto-generated API docs.
    - `REST API (Basic)`: Simple setup without documentation tools.
-5. **Database**:
+6. **Database**:
    - `PostgreSQL (Prisma)`
+   - `PostgreSQL (Prisma Postgres Managed)`
    - `MySQL (Prisma)`
-   - `MongoDB (Prisma)`
    - `MongoDB (Mongoose)`
    - `None`
-6. **Package Manager**: Select `npm`, `pnpm`, `yarn`, or `bun`.
+7. **Authentication**:
+   - `JWT (JSON Web Token)`
+   - `None`
+8. **Template Engine**:
+   - `EJS`
+   - `Pug`
+   - `None (API only)`
+9. **Linting**: (Yes/No) Include ESLint & Prettier.
+10. **Runtime Validation**: (Yes/No) Include Zod.
 
 ---
 
@@ -176,7 +186,7 @@ A typical project created with `@express-tool/cli` looks like this:
 my-express-app/
 ├── 🐳 .dockerignore
 ├── ⚙️ .env
-├── ⚙️ .eslintrc.json
+├── ⚙️ eslint.config.mjs
 ├── 🐙 .github/               # CI/CD Workflows
 ├── 🙈 .gitignore
 ├── 💅 .prettierrc

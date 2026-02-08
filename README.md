@@ -45,10 +45,16 @@ The project is managed as a workspace using `pnpm`.
 - **[packages/core](./packages/core)**: Shared core logic (`@express-tool/core`).
 - **packages/plugins/**: Official plugins extending the CLI capabilities:
   - **[auth](./packages/plugins/auth)**: Authentication logic.
+  - **[ci](./packages/plugins/ci)**: CI/CD workflows.
+  - **[common](./packages/plugins/common)**: Shared utilities (logger, etc.).
   - **[database](./packages/plugins/database)**: Database integration.
+  - **[docker](./packages/plugins/docker)**: Docker configuration.
+  - **[middleware](./packages/plugins/middleware)**: Express middleware.
+  - **[quality](./packages/plugins/quality)**: ESLint & Prettier setup.
   - **[resource](./packages/plugins/resource)**: Code generators.
   - **[swagger](./packages/plugins/swagger)**: API documentation.
-  - ...and more.
+  - **[testing](./packages/plugins/testing)**: Test configuration (Vitest).
+  - **[views](./packages/plugins/views)**: Template engines (EJS, Pug).
 
 ## 🛠 Development
 
