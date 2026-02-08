@@ -1,5 +1,11 @@
 # @express-tool/core
 
+## 2.0.0
+
+### Major Changes
+
+- 3df8b95: Update all the packages
+
 ## 1.0.2
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @express-tool/plugin-docker
 
+## 2.0.0
+
+### Major Changes
+
+- 3df8b95: Update all the packages
+
+### Patch Changes
+
+- Updated dependencies [3df8b95]
+  - @express-tool/core@2.0.0
+
 ## 1.0.2
 
 ### Patch Changes

@@ -1,5 +1,27 @@
 # @express-tool/cli
 
+## 2.0.0
+
+### Major Changes
+
+- 3df8b95: Update all the packages
+
+### Patch Changes
+
+- Updated dependencies [3df8b95]
+  - @express-tool/core@2.0.0
+  - @express-tool/plugin-auth@2.0.0
+  - @express-tool/plugin-ci@2.0.0
+  - @express-tool/plugin-common@2.0.0
+  - @express-tool/plugin-database@2.0.0
+  - @express-tool/plugin-docker@2.0.0
+  - @express-tool/plugin-middleware@2.0.0
+  - @express-tool/plugin-quality@2.0.0
+  - @express-tool/plugin-resource@2.0.0
+  - @express-tool/plugin-swagger@2.0.0
+  - @express-tool/plugin-testing@2.0.0
+  - @express-tool/plugin-views@2.0.0
+
 ## 1.0.4
 
 ### Patch Changes
